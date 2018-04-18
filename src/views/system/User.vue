@@ -26,7 +26,18 @@
                 </template>
             </div>
         </Card>
-        
+        <Modal v-model="removeModal" width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="information-circled"></Icon>
+                <span>提示</span>
+            </p>
+            <div style="text-align:center">
+                <p>此操作为不可逆操作，是否确认删除？</p>
+            </div>
+            <div slot="footer">
+                <Button type="error" size="large" long :loading="setting.loading" @click="removeUser">确认删除</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
@@ -35,6 +46,7 @@
         data () {
             return {
                 selections:[],
+                removeModal:false,
                 setting:{
                     loading:true,
                     showBorder:true
@@ -82,7 +94,16 @@
                                     style: {marginRight: '5px'}
                                 }, '修改'),
                                 h('Button', {
-                                    props: {type: 'error',size: 'small'}
+                                    props: {type: 'error',size: 'small'},
+                                    on:{
+                                        click:()=>{
+                                            this.removeObject = {
+                                                obj:params.row,
+                                                index:params.index
+                                            }
+                                            this.removeModal = true;
+                                        }
+                                    }
                                 }, '删除')
                             ]);
                         }
@@ -92,7 +113,8 @@
                 dataFilter:{
                     page:1,
                     pageSize:10
-                }
+                },
+                removeObject:null
             }
         },
         created(){
@@ -110,12 +132,31 @@
                 this.dataFilter.pageSize = p;
                 this.getData();
             },
+            removeUser(){
+                this.removeModal = false;
+                if(this.removeObject==null){
+                    this.$Message.warning("删除对象为空，无法继续执行！");
+                    return false;
+                }
+                this.setting.loading = true;
+                this.$http.post("/user/remove/"+this.removeObject.obj.id).then(res=>{
+                    if(res.status == 1){
+                        this.data.records.splice(this.removeObject.index,1);
+                    }else{
+                        this.$Message.error(res.msg);
+                    }
+                    this.setting.loading = false;
+                }).catch(e=>{
+                    this.$Message.error("服务器请求失败");
+                    this.setting.loading = false;
+                })
+            },
             lockUser(obj){
                 this.setting.loading = true;
                 let status = obj.status;
                 let req_url = status==1 ? 'lock' : 'unlock';
                 let req_rep = status==1 ? 0 : 1;
-                this.$http.post("/user/"+req_url+"/"+obj.id,{}).then(res=>{
+                this.$http.post("/user/"+req_url+"/"+obj.id).then(res=>{
                     if(res.status == 1){
                         obj.status = req_rep;
                     }else{
