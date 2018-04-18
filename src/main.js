@@ -5,7 +5,13 @@ import store from './store';
 import App from './app.vue';
 import 'iview/dist/styles/iview.css';
 import util from './libs/util';
+import axios from 'axios';
 import './libs/import-config'
+
+Vue.prototype.$http = axios.create({  
+    baseURL: "http://localhost:1000",  
+    timeout: 3000
+});
 
 new Vue({
     el: '#app',

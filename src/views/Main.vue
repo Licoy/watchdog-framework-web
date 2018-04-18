@@ -67,6 +67,7 @@
     </div>
 </template>
 <script>
+    import Cookies from 'js-cookie';
     import shrinkableMenu from '@/components/shrinkable-menu/shrinkable-menu.vue';
     import tagsPageOpened from '@/components/tags-page-opened.vue';
     import breadcrumbNav from '@/components/breadcrumb-nav.vue';
@@ -86,7 +87,7 @@
         data () {
             return {
                 shrink: false,
-                userName: '憧憬Licoy',
+                userName: '',
                 isFullScreen: false,
                 openedSubmenuArr: this.$store.state.app.openedSubmenuArr
             };
@@ -121,6 +122,7 @@
                 if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
+                this.userName = Cookies.get('user');
                 let messageCount = 3;
                 this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);

@@ -41,12 +41,13 @@
 </template>
 <script>
   import Cookies from 'js-cookie';
+  import md5 from 'js-md5';
   export default {
         data () {
             return {
                 isSubmit:false,
                 formItem: {
-                    account:'iview_admin',
+                    account:'',
                     password:'',
                     validateCode:'',
                     agree:true
@@ -66,21 +67,29 @@
             handleSubmit() {
                 this.$refs.formItem.validate((valid) => {
                     if (valid) {
-                        console.log("登录成功")
+                        this.login()
+                    }
+                });
+            },
+            login(){
+                this.$http.post("/account/sign-in",{
+                    username: this.formItem.account,
+                    password: this.formItem.password
+                }).then(res => {
+                    let data = res.data;
+                    if(data.status == 2){
                         Cookies.set('user', this.formItem.account);
-                        Cookies.set('password', this.formItem.password);
+                        Cookies.set('password', md5(md5(this.formItem.password)));
                         this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                        if (this.formItem.userName === 'iview_admin') {
-                            Cookies.set('access', 0);
-                        } else {
-                            Cookies.set('access', 1);
-                        }
-                        console.log("跳转")
                         this.$router.push({
                             name: 'home_index'
                         });
+                    }else{
+                        this.$Message.error(data.msg);
                     }
-                });
+                }).catch(e => {
+                    this.$Message.error("请求服务器验证登录失败");
+                })
             }
         }
     }

@@ -19,8 +19,8 @@
                             </Input>
                         </Col>
                     </Row>
-                    <Table @on-selection-change="selectChange" ref="table"  @on-select-all="selectChange" class="margin-bottom-10" :columns="columns" 
-                        :loading="setting.loading"  :border="setting.showBorder" :data="data"></Table>
+                    <Table @on-selection-change="selectChange" ref="table"  @on-select-all="selectChange" class="margin-bottom-10"
+                         :columns="columns" :loading="setting.loading"  :border="setting.showBorder" :data="data"></Table>
                     <Page :total="100" class="tr" show-elevator show-sizer></Page>
                 </template>
             </div>
@@ -50,7 +50,11 @@
                     {title: 'ID', key: 'id',sortable: true},
                     {title: '用户名', key: 'username',sortable: true},
                     {title: '年龄',key: 'age',sortable: true},
-                    {title: '状态',key: 'status',sortable: true},
+                    {title: '状态',key: 'status', render:(h,params)=>{
+                        return h('span',{
+                            style: {color: params.row.status == 1 ? 'green' : 'red'}
+                        }, params.row.status == 1 ? '正常' : '锁定中')
+                    },sortable: true},
                     {title: '创建日期',key: 'create_date',sortable: true},
                     {
                         title: '操作',
@@ -60,14 +64,14 @@
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
-                                    props: {type: 'info',size: 'small'},
+                                    props: {type: params.row.status == 1 ? 'success' : 'warning' ,size: 'small'},
                                     style: {marginRight: '5px'},
                                     on:{
                                         click:()=>{
-                                            //this.$router.push({path:'/product/setting',query:{info:params.row}})
+                                            params.row.status = params.row.status == 1 ? 0 : 1
                                         }
                                     }
-                                }, '锁定'),
+                                }, params.row.status == 1 ? '锁定' : '恢复'),
                                 h('Button', {
                                     props: {type: 'primary',size: 'small'},
                                     style: {marginRight: '5px'}
