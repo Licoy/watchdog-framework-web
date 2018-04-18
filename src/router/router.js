@@ -50,6 +50,7 @@ export const otherRouter = {
     redirect: '/home',
     component: Main,
     children: [
+         { path: 'home', title: '首页', name: 'home_index', component: () => import('@/views/home/Home.vue') },
          { path: 'account', title: '账户中心', name: 'account', component: () => import('@/views/account/Account.vue') }
     ]
 };
