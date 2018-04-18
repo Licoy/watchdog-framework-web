@@ -26,12 +26,8 @@
 </template>
 
 <script>
-import {Dropdown,Button,Icon,DropdownItem,DropdownMenu} from 'iview'
 export default {
     name: 'sidebarMenuShrink',
-    components:{
-        Dropdown,Button,Icon,DropdownItem,DropdownMenu
-    },
     props: {
         menuList: {
             type: Array

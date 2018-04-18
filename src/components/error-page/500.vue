@@ -20,12 +20,8 @@
 </template>
 
 <script>
-import {Button} from 'iview'
 export default {
     name: 'Error500',
-    components:{
-        Button
-    },
     methods: {
         backPage () {
             this.$router.go(-1);

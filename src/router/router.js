@@ -50,7 +50,7 @@ export const otherRouter = {
     redirect: '/home',
     component: Main,
     children: [
-         { path: 'account', title: '账户中心', name: 'account', component: () => import('@/views/account/account.vue') }
+         { path: 'account', title: '账户中心', name: 'account', component: () => import('@/views/account/Account.vue') }
     ]
 };
 
@@ -63,7 +63,7 @@ export const appRouter = [
         title: '首页',
         component: Main,
         children: [
-            { path: 'index', title: '首页', name: 'home_index', component: () => import('@/views/home/home.vue') }
+            { path: 'index', title: '首页', name: 'home_index', component: () => import('@/views/home/Home.vue') }
         ]
     },
     {
@@ -73,9 +73,9 @@ export const appRouter = [
         title: '系统设置',
         component: Main,
         children: [
-            { path: 'user', icon: 'person', title: '用户管理', name: 'system_user', component: () => import('@/views/home/home.vue') },
-            { path: 'person-stalker', icon: 'compose', title: '角色管理', name: 'system_role', component: () => import('@/views/home/home.vue') },
-            { path: 'permisssion', icon: 'lock-combination', title: '权限管理', name: 'system_permisssion', component: () => import('@/views/home/home.vue') },
+            { path: 'user', icon: 'person', title: '用户管理', name: 'system_user', component: () => import('@/views/system/User.vue') },
+            { path: 'person-stalker', icon: 'compose', title: '角色管理', name: 'system_role', component: () => import('@/views/system/Role.vue') },
+            { path: 'permisssion', icon: 'lock-combination', title: '权限管理', name: 'system_permisssion', component: () => import('@/views/system/Permission.vue') },
         ]
     }
 ];

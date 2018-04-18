@@ -83,11 +83,10 @@
 
 <script>
 import scrollBar from './vue-scroller-bars';
-import {Row, Col, Card} from 'iview'
 export default {
 	name: 'scroll-bar-page',
 	components: {
-		scrollBar, Row, Col, Card
+		scrollBar
 	}
 }
 </script>

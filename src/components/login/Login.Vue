@@ -40,12 +40,8 @@
   </div>
 </template>
 <script>
-  import { Row,Col,Card,FormItem,Button,Checkbox,Input,Icon,Form } from 'iview';
   import Cookies from 'js-cookie';
   export default {
-        components:{
-            Row,Col,Card,FormItem,Button,Checkbox,Input,Icon,Form
-        },
         data () {
             return {
                 isSubmit:false,

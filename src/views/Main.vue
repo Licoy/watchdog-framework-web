@@ -1,5 +1,6 @@
 <style lang="less">
     @import "../styles/main.less";
+    @import "../styles/common.less";
 </style>
 <template>
     <div class="main" :class="{'main-hide-text': shrink}">
@@ -73,7 +74,6 @@
     import lockScreen from '@/components/lockscreen/lockscreen.vue';
     import util from '@/libs/util.js';
     import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
-    import {Button,DropdownMenu,DropdownItem,Dropdown,Avatar,Row,Icon} from 'iview'
     export default {
         components: {
             shrinkableMenu,
@@ -82,7 +82,6 @@
             fullScreen,
             lockScreen,
             scrollBar,
-            Button,DropdownMenu,DropdownItem,Dropdown,Avatar,Row,Icon
         },
         data () {
             return {

@@ -8,7 +8,6 @@
 
 <script>
 import Cookies from 'js-cookie';
-import {Tooltip,Icon} from 'iview';
 const setLockBackSize = () => {
     let x = document.body.clientWidth;
     let y = document.body.clientHeight;
@@ -22,9 +21,6 @@ export default {
             type: Boolean,
             default: false
         }
-    },
-    components:{
-        Tooltip,Icon
     },
     methods: {
         lockScreen () {

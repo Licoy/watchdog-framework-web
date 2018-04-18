@@ -27,12 +27,8 @@
 </template>
 
 <script>
-import {Menu,Submenu,MenuItem,Icon} from 'iview'
 export default {
     name: 'sidebarMenu',
-    components:{
-        Menu,Submenu,MenuItem,Icon
-    },
     props: {
         menuList: Array,
         iconSize: Number,

@@ -7,12 +7,8 @@
 </template>
 
 <script>
-import {Tooltip,Icon} from 'iview';
 export default {
     name: 'fullScreen',
-    components:{
-        Tooltip,Icon
-    },
     props: {
         value: {
             type: Boolean,

@@ -36,12 +36,8 @@
 
 <script>
 import Vue from 'vue';
-import {Dropdown,Button,DropdownItem,DropdownMenu,Tag,Icon} from 'iview';
 export default {
     name: 'tagsPageOpened',
-    components:{
-        Dropdown,Button,DropdownItem,DropdownMenu,Tag,Icon
-    },
     data () {
         return {
             currentPageName: this.$route.name,

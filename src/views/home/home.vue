@@ -14,11 +14,7 @@
   </div>
 </template>
 <script>
-import {Card,Icon} from 'iview'
 export default {
-  components: {
-    Card,Icon
-  }
 }
 </script>
 
