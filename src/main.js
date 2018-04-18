@@ -8,10 +8,26 @@ import util from './libs/util';
 import axios from 'axios';
 import './libs/import-config'
 
-Vue.prototype.$http = axios.create({  
+const axiosInstance = axios.create({  
     baseURL: "http://localhost:1000",  
-    timeout: 3000
+    timeout: 3000,
+    withCredentials: true
 });
+axiosInstance.interceptors.response.use(res => {
+    if(res.data.status == -6){
+        store.commit('logout', this);
+        store.commit('clearOpenedSubmenu');
+        router.push({
+            name: 'login'
+        });
+    }
+    return res.data;
+}, error => {
+    console.log(error)
+    return Promise.reject(error)
+})
+
+Vue.prototype.$http = axiosInstance
 
 new Vue({
     el: '#app',

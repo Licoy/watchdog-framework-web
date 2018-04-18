@@ -3998,6 +3998,10 @@ mime@^1.2.11, mime@^1.4.1, mime@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
 
+miment@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/miment/-/miment-0.0.5.tgz#fcd9476abac9d84e693066e8d6cfe34723f58423"
+
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"

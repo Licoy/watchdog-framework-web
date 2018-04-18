@@ -3,18 +3,18 @@
       
     <Row  class="login-model">
         <Col span="24">
-            <Card @keydown.enter="handleSubmit">
+            <Card>
               <div style="text-align:center;padding:10px">
                 <h2>用户登录</h2>
                 <br>
                 <Form @submit.native.prevent="handleSubmit" ref="formItem" :model="formItem" :rules="FromRule" >
                     <FormItem prop="account">
-                      <Input v-model="formItem.account" type="text" placeholder="用户名">
+                      <Input :disabled="isValidate" v-model.trim="formItem.account" type="text" placeholder="用户名">
                           <Icon type="person" slot="prepend"></Icon>
                       </Input>
                     </FormItem>
                     <FormItem prop="password">
-                        <Input v-model="formItem.password" type="password" placeholder="密码">
+                        <Input :disabled="isValidate" v-model.trim="formItem.password" type="password" placeholder="密码">
                             <Icon type="ios-locked-outline" slot="prepend"></Icon>
                         </Input>
                     </FormItem>
@@ -30,7 +30,9 @@
                     </FormItem> -->
                     <FormItem>
                         <Checkbox v-model="formItem.agree">下次登录记住我的身份</Checkbox><br>
-                        <Button :loading="isSubmit"  :disabled="!formItem.agree" html-type="submit" type="primary">立即登录</Button>
+                        <Button :loading="isSubmit"  :disabled="isValidate" html-type="submit" type="primary">
+                            {{isValidate ? '登录验证中':'立即登录'}}
+                        </Button>
                     </FormItem>
                 </Form>
               </div>
@@ -52,6 +54,7 @@
                     validateCode:'',
                     agree:true
                 },
+                isValidate:false,
                 FromRule:{
                     account:[
                         { required: true, message: '账号不能为空' }
@@ -65,6 +68,9 @@
         },
         methods: {
             handleSubmit() {
+                if(this.isValidate){
+                    return false;
+                }
                 this.$refs.formItem.validate((valid) => {
                     if (valid) {
                         this.login()
@@ -72,12 +78,17 @@
                 });
             },
             login(){
+                this.isValidate = true;
+                const loadings = this.$Message.loading({
+                    content: '用户信息验证中...',
+                    duration: 0
+                });
                 this.$http.post("/account/sign-in",{
                     username: this.formItem.account,
                     password: this.formItem.password
                 }).then(res => {
-                    let data = res.data;
-                    if(data.status == 2){
+                    if(res.status == 2){
+                        this.$Message.success("登录成功");
                         Cookies.set('user', this.formItem.account);
                         Cookies.set('password', md5(md5(this.formItem.password)));
                         this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
@@ -85,10 +96,14 @@
                             name: 'home_index'
                         });
                     }else{
-                        this.$Message.error(data.msg);
+                        this.$Message.error(res.msg);
                     }
+                    setTimeout(loadings, 0);
+                    this.isValidate = false;
                 }).catch(e => {
                     this.$Message.error("请求服务器验证登录失败");
+                    setTimeout(loadings, 0);
+                    this.isValidate = false;
                 })
             }
         }

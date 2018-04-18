@@ -20,8 +20,9 @@
                         </Col>
                     </Row>
                     <Table @on-selection-change="selectChange" ref="table"  @on-select-all="selectChange" class="margin-bottom-10"
-                         :columns="columns" :loading="setting.loading"  :border="setting.showBorder" :data="data"></Table>
-                    <Page :total="100" class="tr" show-elevator show-sizer></Page>
+                         :columns="columns" :loading="setting.loading"  :border="setting.showBorder" :data="data.records"></Table>
+                    <Page :total="data.pages" class="tr" @on-change="pageChange" :current.sync="dataFilter.page" :page-size="dataFilter.pageSize"
+                      @on-page-size-change="pageSizeChange" show-elevator show-sizer></Page>
                 </template>
             </div>
         </Card>
@@ -29,6 +30,7 @@
     </div>
 </template>
 <script>
+    import miment from 'miment'
     export default {
         data () {
             return {
@@ -55,7 +57,10 @@
                             style: {color: params.row.status == 1 ? 'green' : 'red'}
                         }, params.row.status == 1 ? '正常' : '锁定中')
                     },sortable: true},
-                    {title: '创建日期',key: 'create_date',sortable: true},
+                    {title: '创建日期',key: 'createDate',render:(h,params)=>{
+                        return h('span',{},
+                            miment(params.row.createDate).format('YYYY年MM月DD日 hh时mm分ss秒'))
+                    },sortable: true},
                     {
                         title: '操作',
                         key: 'action',
@@ -68,7 +73,7 @@
                                     style: {marginRight: '5px'},
                                     on:{
                                         click:()=>{
-                                            params.row.status = params.row.status == 1 ? 0 : 1
+                                            this.lockUser(params.row)
                                         }
                                     }
                                 }, params.row.status == 1 ? '锁定' : '恢复'),
@@ -83,7 +88,11 @@
                         }
                     }
                 ],
-                data: []
+                data: [],
+                dataFilter:{
+                    page:1,
+                    pageSize:10
+                }
             }
         },
         created(){
@@ -93,18 +102,47 @@
             selectChange(selection){
                 this.selections = selection;
             },
+            pageChange(p){
+                this.dataFilter.page = p;
+                this.getData();
+            },
+            pageSizeChange(p){
+                this.dataFilter.pageSize = p;
+                this.getData();
+            },
+            lockUser(obj){
+                this.setting.loading = true;
+                let status = obj.status;
+                let req_url = status==1 ? 'lock' : 'unlock';
+                let req_rep = status==1 ? 0 : 1;
+                this.$http.post("/user/"+req_url+"/"+obj.id,{}).then(res=>{
+                    if(res.status == 1){
+                        obj.status = req_rep;
+                    }else{
+                        this.$Message.error(res.msg);
+                    }
+                    this.setting.loading = false;
+                }).catch(e=>{
+                    this.$Message.error("服务器请求失败");
+                    this.setting.loading = false;
+                })
+            },
             getData(){
                 this.setting.loading = true;
-                this.data = [
-                    {
-                        id:12,
-                        username:'licoy',
-                        age:20,
-                        status:1,
-                        create_date:'2018年4月18日09:29:54'
+                this.$http.post("/user/list",{
+                    page:this.dataFilter.page,
+                    pageSize:this.dataFilter.pageSize
+                }).then(res=>{
+                    if(res.status == 1){
+                        this.data = res.data;
+                    }else{
+                        this.$Message.error(res.msg);
                     }
-                ]
-                this.setting.loading = false;
+                    this.setting.loading = false;
+                }).catch(e=>{
+                    this.$Message.error("服务器请求失败");
+                    this.setting.loading = false;
+                })
             },
             exportData(type){
                 if (type === 1) {
