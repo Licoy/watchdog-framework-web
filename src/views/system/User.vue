@@ -109,7 +109,7 @@
                         }
                     }
                 ],
-                data: [],
+                data: {},
                 dataFilter:{
                     page:1,
                     pageSize:10
@@ -188,7 +188,7 @@
             exportData(type){
                 if (type === 1) {
                     this.$refs.table.exportCsv({
-                        filename: '产品数据-'+new Date().getTime(),
+                        filename: '用户数据-'+new Date().getTime(),
                         columns: this.columns.filter((col, index) => index > 1 && index < this.columns.length-1),
                         data: this.data
                     });

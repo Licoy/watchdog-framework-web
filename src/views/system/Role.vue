@@ -9,7 +9,8 @@
                 <template>
                     <Row>
                         <Col span="15">
-                            <Button type="error"><Icon type="trash-a"></Icon>&nbsp;批量删除，已选 {{selections.length}} 项</Button>
+                            <Button type="info" @click="addRoleModal=true"><Icon type="plus"></Icon>&nbsp;添加角色</Button>
+                            <Button type="error" :disabled="selections.length==0"><Icon type="trash-a"></Icon>&nbsp;批量删除，已选 {{selections.length}} 项</Button>
                             <Button :disabled="setting.loading" type="success" @click="getData"><Icon type="refresh"></Icon>&nbsp;刷新数据</Button>
                             <Button type="primary" @click="exportData(1)"><Icon type="ios-download-outline"></Icon>&nbsp;导出表格</Button>
                         </Col>
@@ -20,19 +21,23 @@
                         </Col>
                     </Row>
                     <Table @on-selection-change="selectChange" ref="table"  @on-select-all="selectChange" class="margin-bottom-10" :columns="columns" 
-                        :loading="setting.loading"  :border="setting.showBorder" :data="data"></Table>
-                    <Page :total="100" class="tr" show-elevator show-sizer></Page>
+                        :loading="setting.loading"  :border="setting.showBorder" :data="data.records"></Table>
+                     <Page :total="data.pages" class="tr" @on-change="pageChange" :current.sync="dataFilter.page" :page-size="dataFilter.pageSize"
+                      @on-page-size-change="pageSizeChange" show-elevator show-sizer></Page>
                 </template>
             </div>
         </Card>
-        
+        <AddRole v-if="addRoleModal" @cancel="onAddRoleModalCancel"/>
     </div>
 </template>
 <script>
+    import AddRole from '@/components/system/role/AddRole'
     export default {
         data () {
             return {
+                addRoleModal:false,
                 selections:[],
+                removeModal:false,
                 setting:{
                     loading:true,
                     showBorder:true
@@ -48,10 +53,25 @@
                         align: 'center'
                     },
                     {title: 'ID', key: 'id',sortable: true},
-                    {title: '用户名', key: 'username',sortable: true},
-                    {title: '年龄',key: 'age',sortable: true},
-                    {title: '状态',key: 'status',sortable: true},
-                    {title: '创建日期',key: 'create_date',sortable: true},
+                    {title: '角色名', key: 'name',sortable: true},
+                    {title: '权限集',key: 'permission',sortable: true, render:(h, params)=>{
+                        let permissions = params.row.permissions;
+                        if(permissions!=null && typeof(permissions)=="object" && permissions.length > 0){
+                            let ps = [];
+                            permissions.forEach(element => {
+                                let r = h('Tag',{
+                                    props:{
+                                        color:'green',
+                                        type:'dot'
+                                    }
+                                },element.name);
+                                ps.push(r);
+                            });
+                            return h('div',ps)
+                        }else{
+                            return h('span','空')
+                        }
+                    }},
                     {
                         title: '操作',
                         key: 'action',
@@ -79,8 +99,16 @@
                         }
                     }
                 ],
-                data: []
+                data: {},
+                dataFilter:{
+                    page:1,
+                    pageSize:10
+                },
+                removeObject:null
             }
+        },
+        components: {
+            AddRole
         },
         created(){
             this.getData();
@@ -89,23 +117,38 @@
             selectChange(selection){
                 this.selections = selection;
             },
+            pageChange(p){
+                this.dataFilter.page = p;
+                this.getData();
+            },
+            pageSizeChange(p){
+                this.dataFilter.pageSize = p;
+                this.getData();
+            },
             getData(){
                 this.setting.loading = true;
-                this.data = [
-                    {
-                        id:12,
-                        username:'licoy',
-                        age:20,
-                        status:1,
-                        create_date:'2018年4月18日09:29:54'
+                this.$http.post("/role/list",{
+                    page:this.dataFilter.page,
+                    pageSize:this.dataFilter.pageSize
+                }).then(res=>{
+                    if(res.status == 1){
+                        this.data = res.data;
+                    }else{
+                        this.$Message.error(res.msg);
                     }
-                ]
-                this.setting.loading = false;
+                    this.setting.loading = false;
+                }).catch(e=>{
+                    this.$Message.error("服务器请求失败");
+                    this.setting.loading = false;
+                })
+            },
+            onAddRoleModalCancel(){
+                this.addRoleModal = false;
             },
             exportData(type){
                 if (type === 1) {
                     this.$refs.table.exportCsv({
-                        filename: '产品数据-'+new Date().getTime(),
+                        filename: '权限数据-'+new Date().getTime(),
                         columns: this.columns.filter((col, index) => index > 1 && index < this.columns.length-1),
                         data: this.data
                     });
