@@ -42,6 +42,7 @@
 </template>
 <script>
     import miment from 'miment'
+    import { post } from '@/libs/axios-cfg'
     export default {
         data () {
             return {
@@ -132,58 +133,54 @@
                 this.dataFilter.pageSize = p;
                 this.getData();
             },
-            removeUser(){
+            async removeUser(){
                 this.removeModal = false;
                 if(this.removeObject==null){
                     this.$Message.warning("删除对象为空，无法继续执行！");
                     return false;
                 }
                 this.setting.loading = true;
-                this.$http.post("/user/remove/"+this.removeObject.obj.id).then(res=>{
-                    if(res.status == 1){
-                        this.data.records.splice(this.removeObject.index,1);
-                    }else{
-                        this.$Message.error(res.msg);
-                    }
-                    this.setting.loading = false;
-                }).catch(e=>{
-                    this.$Message.error("服务器请求失败");
-                    this.setting.loading = false;
-                })
+                try {
+                    let res = await post('/user/remove/{uid}',null,{
+                        uid: this.removeObject.obj.id
+                    })
+                    this.$Message.success("删除成功");
+                    this.data.records.splice(this.removeObject.index,1);
+                } catch (error) {
+                    this.$throw(error)
+                }
+                this.setting.loading = false;
             },
-            lockUser(obj){
+            async lockUser(obj){
                 this.setting.loading = true;
                 let status = obj.status;
                 let req_url = status==1 ? 'lock' : 'unlock';
                 let req_rep = status==1 ? 0 : 1;
-                this.$http.post("/user/"+req_url+"/"+obj.id).then(res=>{
-                    if(res.status == 1){
-                        obj.status = req_rep;
-                    }else{
-                        this.$Message.error(res.msg);
-                    }
-                    this.setting.loading = false;
-                }).catch(e=>{
-                    this.$Message.error("服务器请求失败");
-                    this.setting.loading = false;
-                })
+                let req_msg = status==1 ? '已锁定' : '已解锁';
+                try {
+                    let res = await post('/user/{method}/{uid}',null,{
+                        uid: obj.id,
+                        method: req_url
+                    })
+                    this.$Message.success(req_msg);
+                    obj.status = req_rep;
+                } catch (error) {
+                    this.$throw(error)
+                }
+                this.setting.loading = false;
             },
-            getData(){
+            async getData(){
                 this.setting.loading = true;
-                this.$http.post("/user/list",{
-                    page:this.dataFilter.page,
-                    pageSize:this.dataFilter.pageSize
-                }).then(res=>{
-                    if(res.status == 1){
-                        this.data = res.data;
-                    }else{
-                        this.$Message.error(res.msg);
-                    }
-                    this.setting.loading = false;
-                }).catch(e=>{
-                    this.$Message.error("服务器请求失败");
-                    this.setting.loading = false;
-                })
+                try {
+                    let res = await post('/user/list',{
+                        page:this.dataFilter.page,
+                        pageSize:this.dataFilter.pageSize
+                    })
+                    this.data = res.data;
+                } catch (error) {
+                    this.$throw(error)
+                }
+                this.setting.loading = false;
             },
             exportData(type){
                 if (type === 1) {

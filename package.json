@@ -22,6 +22,7 @@
     "js-cookie": "^2.2.0",
     "js-md5": "^0.7.3",
     "miment": "^0.0.5",
+    "string-format": "^1.0.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

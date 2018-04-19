@@ -28,10 +28,23 @@
             </div>
         </Card>
         <AddRole v-if="addRoleModal" @cancel="onAddRoleModalCancel"/>
+        <Modal v-model="removeModal" width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="information-circled"></Icon>
+                <span>提示</span>
+            </p>
+            <div style="text-align:center">
+                <p>此操作为不可逆操作，是否确认删除？</p>
+            </div>
+            <div slot="footer">
+                <Button type="error" size="large" long :loading="setting.loading" @click="remove">确认删除</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
     import AddRole from '@/components/system/role/AddRole'
+    import { post } from '@/libs/axios-cfg'
     export default {
         data () {
             return {
@@ -80,20 +93,20 @@
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
-                                    props: {type: 'info',size: 'small'},
-                                    style: {marginRight: '5px'},
-                                    on:{
-                                        click:()=>{
-                                            //this.$router.push({path:'/product/setting',query:{info:params.row}})
-                                        }
-                                    }
-                                }, '锁定'),
-                                h('Button', {
                                     props: {type: 'primary',size: 'small'},
                                     style: {marginRight: '5px'}
                                 }, '修改'),
                                 h('Button', {
-                                    props: {type: 'error',size: 'small'}
+                                    props: {type: 'error',size: 'small'},
+                                    on:{
+                                        click:()=>{
+                                            this.removeObject = {
+                                                obj:params.row,
+                                                index:params.index
+                                            }
+                                            this.removeModal = true;
+                                        }
+                                    }
                                 }, '删除')
                             ]);
                         }
@@ -125,22 +138,36 @@
                 this.dataFilter.pageSize = p;
                 this.getData();
             },
-            getData(){
+            async remove(){
+                this.removeModal = false;
+                if(this.removeObject==null){
+                    this.$Message.warning("删除对象为空，无法继续执行！");
+                    return false;
+                }
                 this.setting.loading = true;
-                this.$http.post("/role/list",{
-                    page:this.dataFilter.page,
-                    pageSize:this.dataFilter.pageSize
-                }).then(res=>{
-                    if(res.status == 1){
-                        this.data = res.data;
-                    }else{
-                        this.$Message.error(res.msg);
-                    }
-                    this.setting.loading = false;
-                }).catch(e=>{
-                    this.$Message.error("服务器请求失败");
-                    this.setting.loading = false;
-                })
+                try {
+                    let res = await post('/role/remove/{rid}',null,{
+                        rid: this.removeObject.obj.id
+                    })
+                   this.$Message.success("删除成功");
+                    this.data.records.splice(this.removeObject.index,1);
+                } catch (error) {
+                    this.$throw(error)
+                }
+                this.setting.loading = false;
+            },
+            async getData(){
+                this.setting.loading = true;
+                try {
+                    let res = await post('/role/list',{
+                        page:this.dataFilter.page,
+                        pageSize:this.dataFilter.pageSize
+                    })
+                    this.data = res.data;
+                } catch (error) {
+                    this.$throw(error)
+                }
+                this.setting.loading = false;
             },
             onAddRoleModalCancel(){
                 this.addRoleModal = false;

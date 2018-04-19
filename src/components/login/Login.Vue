@@ -18,16 +18,6 @@
                             <Icon type="ios-locked-outline" slot="prepend"></Icon>
                         </Input>
                     </FormItem>
-                    
-                     <!--<FormItem>
-                       <img src="../../assets/validate-code.png" alt="验证码" title="点击刷新验证码" style="cursor: pointer;float:left">
-                     </FormItem>
-                                            
-                     <FormItem prop="validateCode">
-                        <Input type="text" v-model="formItem.validateCode" placeholder="验证码">
-                            <Icon type="ios-glasses" slot="prepend"></Icon>
-                        </Input>
-                    </FormItem> -->
                     <FormItem>
                         <Checkbox v-model="formItem.agree">下次登录记住我的身份</Checkbox><br>
                         <Button :loading="isSubmit"  :disabled="isValidate" html-type="submit" type="primary">
@@ -44,6 +34,7 @@
 <script>
   import Cookies from 'js-cookie';
   import md5 from 'js-md5';
+  import { post } from '@/libs/axios-cfg'
   export default {
         data () {
             return {
@@ -77,34 +68,29 @@
                     }
                 });
             },
-            login(){
+            async login(){
                 this.isValidate = true;
                 const loadings = this.$Message.loading({
                     content: '用户信息验证中...',
                     duration: 0
                 });
-                this.$http.post("/account/sign-in",{
-                    username: this.formItem.account,
-                    password: this.formItem.password
-                }).then(res => {
-                    if(res.status == 2){
-                        this.$Message.success("登录成功");
-                        Cookies.set('user', this.formItem.account);
-                        Cookies.set('password', md5(md5(this.formItem.password)));
-                        this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                        this.$router.push({
-                            name: 'home_index'
-                        });
-                    }else{
-                        this.$Message.error(res.msg);
-                    }
-                    setTimeout(loadings, 0);
-                    this.isValidate = false;
-                }).catch(e => {
-                    this.$Message.error("请求服务器验证登录失败");
-                    setTimeout(loadings, 0);
-                    this.isValidate = false;
-                })
+                try {
+                    let res = await post('/account/sign-in',{
+                        username: this.formItem.account,
+                        password: this.formItem.password
+                    })
+                    this.$Message.success("登录成功");
+                    Cookies.set('user', this.formItem.account);
+                    Cookies.set('password', md5(md5(this.formItem.password)));
+                    this.$store.commit('setAvator', '');
+                    this.$router.push({
+                        name: 'home_index'
+                    });
+                } catch (error) {
+                    this.$throw(error)
+                }
+                setTimeout(loadings, 0);
+                this.isValidate = false;
             }
         }
     }
