@@ -194,42 +194,6 @@
             this.getData();
         },
         methods:{
-            async removeUser(){
-                this.removeModal = false;
-                if(this.removeObject==null){
-                    this.$Message.warning("删除对象为空，无法继续执行！");
-                    return false;
-                }
-                this.setting.loading = true;
-                try {
-                    let res = await post('/user/remove/{uid}',null,{
-                        uid: this.removeObject.obj.id
-                    })
-                    this.$Message.success("删除成功");
-                    this.data.records.splice(this.removeObject.index,1);
-                } catch (error) {
-                    this.$throw(error)
-                }
-                this.setting.loading = false;
-            },
-            async lockUser(obj){
-                this.setting.loading = true;
-                let status = obj.status;
-                let req_url = status==1 ? 'lock' : 'unlock';
-                let req_rep = status==1 ? 0 : 1;
-                let req_msg = status==1 ? '已锁定' : '已解锁';
-                try {
-                    let res = await post('/user/{method}/{uid}',null,{
-                        uid: obj.id,
-                        method: req_url
-                    })
-                    this.$Message.success(req_msg);
-                    obj.status = req_rep;
-                } catch (error) {
-                    this.$throw(error)
-                }
-                this.setting.loading = false;
-            },
             async getData(showMsg = true){
                 this.setting.loading = true;
                 if(showMsg){
