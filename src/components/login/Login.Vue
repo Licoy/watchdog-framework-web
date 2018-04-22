@@ -19,7 +19,7 @@
                         </Input>
                     </FormItem>
                     <FormItem>
-                        <Checkbox v-model="formItem.agree">下次登录记住我的身份</Checkbox><br>
+                        <Checkbox :disabled="isValidate" v-model="formItem.agree">下次登录记住我的身份</Checkbox><br>
                         <Button :loading="isSubmit"  :disabled="isValidate" html-type="submit" type="primary">
                             {{isValidate ? '登录验证中':'立即登录'}}
                         </Button>

@@ -3,7 +3,7 @@
         <Card>
             <p slot="title" class="card-title">
                 <Icon type="home"></Icon>
-                <span>用户管理</span>
+                <span>角色管理</span>
             </p>
             <div>
                 <template>

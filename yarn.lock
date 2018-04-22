@@ -5739,7 +5739,7 @@ strict-uri-encode@^1.0.0:
 
 string-format@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/string-format/-/string-format-1.0.0.tgz#a43a829cd2a6c3cba22076070697ad4e4836eb3f"
+  resolved "https://registry.npmjs.org/string-format/-/string-format-1.0.0.tgz#a43a829cd2a6c3cba22076070697ad4e4836eb3f"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
@@ -6273,6 +6273,12 @@ vue-style-loader@^3.0.0, vue-style-loader@^3.0.3:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
+vue-table-with-tree-grid@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.npmjs.org/vue-table-with-tree-grid/-/vue-table-with-tree-grid-0.2.4.tgz#b60b22810ab861bdb669afb3d6f0079a4cee52a4"
+  dependencies:
+    vue "^2.4.3"
+
 vue-template-compiler@^2.5.13:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.16.tgz#93b48570e56c720cdf3f051cc15287c26fbd04cb"
@@ -6284,7 +6290,7 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
-vue@^2.5.2:
+vue@^2.4.3, vue@^2.5.2:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 

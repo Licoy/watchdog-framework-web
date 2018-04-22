@@ -19,11 +19,11 @@ axiosInstance.interceptors.response.use(res => {
     }
     //状态码小于0属于异常情况
     if(res.data.status < 0){
-        iView.Message.error(res.data.msg);
         throw new ResError(res.data.msg)
     }
     return res.data;
 }, error => {
+    throw new ResError("请求服务器失败，请检查服务是否正常！")
     return error
 })
 

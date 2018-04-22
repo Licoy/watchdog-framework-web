@@ -2,13 +2,13 @@
   <div>
       <!-- 添加角色  -->
         <Modal v-model="showModal" title="角色添加" @on-cancel="cancel" @on-ok="ok">
-            <Form  :label-width="70">
-                <FormItem label="角色名称">
+            <Form  :label-width="80">
+                <FormItem label="角色名称：">
                     <Input v-model="formItem.name" placeholder="角色名称"></Input>
                 </FormItem>
             </Form>
             <Form  :label-width="70">
-                <FormItem label="权限集">
+                <FormItem label="权限集：">
                     <Tree ref="tree" :data="formItem.permissions" show-checkbox></Tree>
                 </FormItem>
             </Form>

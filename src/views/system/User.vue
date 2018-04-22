@@ -65,15 +65,26 @@
                     {title: 'ID', key: 'id',sortable: true},
                     {title: '用户名', key: 'username',sortable: true},
                     {title: '年龄',key: 'age',sortable: true},
-                    {title: '状态',key: 'status', render:(h,params)=>{
-                        return h('span',{
-                            style: {color: params.row.status == 1 ? 'green' : 'red'}
-                        }, params.row.status == 1 ? '正常' : '锁定中')
-                    },sortable: true},
-                    {title: '创建日期',key: 'createDate',render:(h,params)=>{
-                        return h('span',{},
-                            miment(params.row.createDate).format('YYYY年MM月DD日 hh时mm分ss秒'))
-                    },sortable: true},
+                    {
+                        title: '状态',
+                        key: 'status', 
+                        render:(h,params)=>{
+                            return h('span',
+                                {
+                                    style: {color: params.row.status == 1 ? 'green' : 'red'
+                                }
+                            }, params.row.status == 1 ? '正常' : '锁定中')
+                        },
+                        sortable: true
+                    },
+                    {
+                        title: '创建日期',
+                        key: 'createDate',
+                        render:(h,params)=>{
+                            return h('span',miment(params.row.createDate).format('YYYY年MM月DD日 hh时mm分ss秒'))
+                        },
+                        sortable: true
+                    },
                     {
                         title: '操作',
                         key: 'action',
