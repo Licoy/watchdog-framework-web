@@ -146,7 +146,7 @@
                 }
                 this.setting.loading = true;
                 try {
-                    let res = await post('/role/remove/{rid}',null,{
+                    let res = await post('/system/role/remove/{rid}',null,{
                         rid: this.removeObject.obj.id
                     })
                    this.$Message.success("删除成功");
@@ -159,7 +159,7 @@
             async getData(){
                 this.setting.loading = true;
                 try {
-                    let res = await post('/role/list',{
+                    let res = await post('/system/role/list',{
                         page:this.dataFilter.page,
                         pageSize:this.dataFilter.pageSize
                     })

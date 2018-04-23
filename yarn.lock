@@ -6275,7 +6275,7 @@ vue-style-loader@^3.0.0, vue-style-loader@^3.0.3:
 
 vue-table-with-tree-grid@^0.2.4:
   version "0.2.4"
-  resolved "https://registry.npmjs.org/vue-table-with-tree-grid/-/vue-table-with-tree-grid-0.2.4.tgz#b60b22810ab861bdb669afb3d6f0079a4cee52a4"
+  resolved "https://registry.yarnpkg.com/vue-table-with-tree-grid/-/vue-table-with-tree-grid-0.2.4.tgz#b60b22810ab861bdb669afb3d6f0079a4cee52a4"
   dependencies:
     vue "^2.4.3"
 

@@ -152,7 +152,7 @@
                 }
                 this.setting.loading = true;
                 try {
-                    let res = await post('/user/remove/{uid}',null,{
+                    let res = await post('/system/user/remove/{uid}',null,{
                         uid: this.removeObject.obj.id
                     })
                     this.$Message.success("删除成功");
@@ -169,7 +169,7 @@
                 let req_rep = status==1 ? 0 : 1;
                 let req_msg = status==1 ? '已锁定' : '已解锁';
                 try {
-                    let res = await post('/user/{method}/{uid}',null,{
+                    let res = await post('/system/user/{method}/{uid}',null,{
                         uid: obj.id,
                         method: req_url
                     })
@@ -183,7 +183,7 @@
             async getData(){
                 this.setting.loading = true;
                 try {
-                    let res = await post('/user/list',{
+                    let res = await post('/system/user/list',{
                         page:this.dataFilter.page,
                         pageSize:this.dataFilter.pageSize
                     })
