@@ -9,7 +9,7 @@
                 <template>
                     <Row>
                         <Col span="15">
-                            <Button type="error" :disabled="selections.length==0"><Icon type="trash-a"></Icon>&nbsp;批量删除，已选 {{selections.length}} 项</Button>
+                            <Button type="info" @click="openAddModal(null)"><Icon type="plus"></Icon>&nbsp;添加用户</Button>
                             <Button :disabled="setting.loading" type="success" @click="getData"><Icon type="refresh"></Icon>&nbsp;刷新数据</Button>
                             <Button type="primary" @click="exportData(1)"><Icon type="ios-download-outline"></Icon>&nbsp;导出表格</Button>
                         </Col>
@@ -26,6 +26,29 @@
                 </template>
             </div>
         </Card>
+        <Modal v-model="modal.show" :title="modal.type==1 ? '添加用户':'编辑用户'"
+             :mask-closable="false">
+            <Form :model="modal.data" :label-width="80">
+                <FormItem v-if="modal.type==2" label="ID">
+                    <Input disabled :value="modal.data.id"></Input>
+                </FormItem>
+                <FormItem v-if="modal.type==1 && modal.data.parentName!=null" label="父级名称">
+                    <Input disabled :value="modal.data.parentName"></Input>
+                </FormItem>
+                <FormItem label="用户名">
+                    <Input v-model.trim="modal.data.username"></Input>
+                </FormItem>
+                <FormItem label="年龄">
+                    <InputNumber  :min="0" :step="1" v-model.trim="modal.data.age" style="width:100%"/>
+                </FormItem>
+                <FormItem label="状态">
+                    <Select v-model.trim="modal.data.status" style="width:100%">
+                        <Option v-for="item in [{label:'正常',value:1},{label:'锁定',value:0}]"
+                         :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                </FormItem>
+            </Form>
+        </Modal>
         <Modal v-model="removeModal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
                 <Icon type="information-circled"></Icon>
@@ -48,6 +71,16 @@
             return {
                 selections:[],
                 removeModal:false,
+                modal:{
+                    show:true,
+                    type:1,
+                    loading:true,
+                    data:{
+                        username:'',
+                        age:0,
+                        status:1
+                    }
+                },
                 setting:{
                     loading:true,
                     showBorder:true
@@ -57,11 +90,6 @@
                     value:''
                 },
                 columns: [
-                    {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    },
                     {title: 'ID', key: 'id',sortable: true},
                     {title: '用户名', key: 'username',sortable: true},
                     {title: '年龄',key: 'age',sortable: true},
@@ -133,9 +161,6 @@
             this.getData();
         },
         methods:{
-            selectChange(selection){
-                this.selections = selection;
-            },
             pageChange(p){
                 this.dataFilter.page = p;
                 this.getData();
@@ -173,6 +198,7 @@
                         uid: obj.id,
                         method: req_url
                     })
+                    this.$Message.destroy();
                     this.$Message.success(req_msg);
                     obj.status = req_rep;
                 } catch (error) {

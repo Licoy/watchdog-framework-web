@@ -10,7 +10,6 @@
                     <Row>
                         <Col span="15">
                             <Button type="info" @click="addRoleModal=true"><Icon type="plus"></Icon>&nbsp;添加角色</Button>
-                            <Button type="error" :disabled="selections.length==0"><Icon type="trash-a"></Icon>&nbsp;批量删除，已选 {{selections.length}} 项</Button>
                             <Button :disabled="setting.loading" type="success" @click="getData"><Icon type="refresh"></Icon>&nbsp;刷新数据</Button>
                             <Button type="primary" @click="exportData(1)"><Icon type="ios-download-outline"></Icon>&nbsp;导出表格</Button>
                         </Col>
@@ -28,6 +27,7 @@
             </div>
         </Card>
         <AddRole v-if="addRoleModal" @cancel="onAddRoleModalCancel"/>
+        <UpdateRole v-if="updateRoleModal" :update-object="updateObject" @cancel="onUpdateRoleModalCancel"/>
         <Modal v-model="removeModal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
                 <Icon type="information-circled"></Icon>
@@ -44,12 +44,14 @@
 </template>
 <script>
     import AddRole from '@/components/system/role/AddRole'
+    import UpdateRole from '@/components/system/role/UpdateRole'
     import { post } from '@/libs/axios-cfg'
     export default {
         data () {
             return {
                 addRoleModal:false,
-                selections:[],
+                updateRoleModal:false,
+                updateObject:null,
                 removeModal:false,
                 setting:{
                     loading:true,
@@ -60,18 +62,13 @@
                     value:''
                 },
                 columns: [
-                    {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    },
                     {title: 'ID', key: 'id',sortable: true},
                     {title: '角色名', key: 'name',sortable: true},
-                    {title: '权限集',key: 'permission',sortable: true, render:(h, params)=>{
-                        let permissions = params.row.permissions;
-                        if(permissions!=null && typeof(permissions)=="object" && permissions.length > 0){
+                    {title: '权限集',key: 'resources',sortable: true, render:(h, params)=>{
+                        let resources = params.row.resources;
+                        if(resources!=null && typeof(resources)=="object" && resources.length > 0){
                             let ps = [];
-                            permissions.forEach(element => {
+                            resources.forEach(element => {
                                 let r = h('Tag',{
                                     props:{
                                         color:'green',
@@ -79,6 +76,7 @@
                                     }
                                 },element.name);
                                 ps.push(r);
+                                this.dealPostData(element.children,ps, h)
                             });
                             return h('div',ps)
                         }else{
@@ -94,7 +92,13 @@
                             return h('div', [
                                 h('Button', {
                                     props: {type: 'primary',size: 'small'},
-                                    style: {marginRight: '5px'}
+                                    style: {marginRight: '5px'},
+                                    on:{
+                                        click:()=>{
+                                            this.updateObject = params.row;
+                                            this.updateRoleModal = true;
+                                        }
+                                    }
                                 }, '修改'),
                                 h('Button', {
                                     props: {type: 'error',size: 'small'},
@@ -121,15 +125,12 @@
             }
         },
         components: {
-            AddRole
+            AddRole,UpdateRole
         },
         created(){
             this.getData();
         },
         methods:{
-            selectChange(selection){
-                this.selections = selection;
-            },
             pageChange(p){
                 this.dataFilter.page = p;
                 this.getData();
@@ -169,8 +170,30 @@
                 }
                 this.setting.loading = false;
             },
-            onAddRoleModalCancel(){
+            onAddRoleModalCancel(up=false){
                 this.addRoleModal = false;
+                if(up) this.getData()
+            },
+            onUpdateRoleModalCancel(up=false){
+                this.updateRoleModal = false;
+                if(up) this.getData()
+            },
+            dealPostData(data, ps, h){
+                if(data!=null){
+                    data.forEach(element => {
+                        let r = h('Tag',{
+                            props:{
+                                color:'green',
+                                type:'dot'
+                            }
+                        },element.name);
+                        ps.push(r);
+                        if(element.children!=null){
+                            this.dealPostData(element.children, ps, h)
+                        }
+                    });
+                }
+                
             },
             exportData(type){
                 if (type === 1) {

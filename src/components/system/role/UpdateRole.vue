@@ -1,8 +1,8 @@
 <template>
   <div>
-      <!-- 添加角色  -->
-        <Modal v-model="showModal" title="角色添加" :loading="loading" :mask-closable="false" :width="800" :closable="false">
-            <Form ref="addrole" :model="formItem" :label-width="90" :rules="ruleValidate">
+      <!-- 更新角色  -->
+        <Modal v-model="showModal" title="更新角色" :loading="loading" :mask-closable="false" :width="800" :closable="false">
+            <Form ref="updateRole" :model="formItem" :label-width="90" :rules="ruleValidate">
                 <FormItem label="角色名称：" prop="name">
                     <Input v-model="formItem.name" placeholder="角色名称"></Input>
                 </FormItem>
@@ -22,31 +22,40 @@
 <script>
 import { post } from '@/libs/axios-cfg'
 export default {
-  data(){
-      return {
-          formItem: {
-                name:'',
-                permissions: []
-          },
-          showModal:true,
-          loading: false,
-          ruleValidate:{
-              name:[
-                  { required: true, message: '角色名称不能为空'}
-              ]
-          }
-       }
-  },
+    data(){
+        return {
+            formItem: {
+                    name:'',
+                    permissions: []
+            },
+            showModal:true,
+            loading: false,
+            ruleValidate:{
+                name:[
+                    { required: true, message: '角色名称不能为空'}
+                ]
+            }
+        }
+    },
+    props:{
+        updateObject:{
+            type:Object,
+            default:null
+        }
+    },
     created(){
+        if(this.updateObject!=null){
+            this.formItem.name = this.updateObject.name;
+        }
         this.getAllResource()
     },
-  methods:{
+    methods:{
       cancel(up=false){
           this.$emit('cancel',up);
       },
       ok(){
         let useList = this.$refs.tree.getCheckedNodes();
-        this.$refs.addrole.validate((valid) => {
+        this.$refs.updateRole.validate((valid) => {
             if (valid) {
                 if(useList.length<1){
                     this.$Notice.destroy();
@@ -59,16 +68,18 @@ export default {
                         name:this.formItem.name,
                         resources:useList
                     }
-                    this.add(postObj)
+                    this.update(postObj)
                 }
             }
         })
       },
-      async add(data){
+      async update(data){
         this.loading = true;
         try {
-            let res = await post('/system/role/add',data)
-            this.$Message.success("角色 "+data.name+" 添加成功");
+            let res = await post('/system/role/update/{id}',data,{
+                id:this.updateObject.id
+            })
+            this.$Message.success("角色 "+data.name+" 更新成功");
             this.cancel(true);
         } catch (error) {
             this.$throw(error)
@@ -85,9 +96,22 @@ export default {
             this.$throw(error)
         }
       },
+      permissionSync(data,ro){
+        if(data!=null && data.length>0){
+            data.forEach(r => {
+                if(r.id==ro.id){
+                    ro.checked = true;
+                }
+                if(r.children!=null && r.children.length>0){
+                    permissionSync(data,ro)
+                }
+            })
+        }
+      },
       dealPostData(data){
           data.forEach(element => {
               element.title = element.name;
+              this.permissionSync(this.updateObject.resources,element)
               if(element.children!=null){
                   this.dealPostData(element.children)
               }

@@ -8,7 +8,7 @@
             <div>
                 <template>
                     <Row>
-                        <Col span="15">
+                        <Col span="15"  class="margin-bottom-10">
                             <Button type="info" @click="openAddModal(null)"><Icon type="plus"></Icon>&nbsp;添加资源</Button>
                             <Button :disabled="setting.loading" type="success" @click="getData"><Icon type="refresh"></Icon>&nbsp;刷新数据</Button>
                             <Tooltip placement="top">
@@ -20,11 +20,6 @@
                                     <p>是否折叠所有的节点</p>
                                 </div>
                             </Tooltip>
-                        </Col>
-                        <Col span="9">
-                            <Input v-model="search.value" placeholder="请输入您想要搜索的内容..." class="margin-bottom-10">
-                                <Button slot="append" icon="ios-search"></Button>
-                            </Input>
                         </Col>
                     </Row>
                     <zk-table
@@ -118,10 +113,6 @@
                 setting:{
                     loading:true,
                     showBorder:true
-                },
-                search:{
-                    type:'name',
-                    value:''
                 },
                 props: {
                     stripe: true,

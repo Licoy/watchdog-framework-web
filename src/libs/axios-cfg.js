@@ -2,6 +2,8 @@ import axios from 'axios';
 import iView from 'iview'
 import { ResError } from './error/ResError';
 import sf from 'string-format';
+import store from '@/store';
+import {router} from '@/router/index';
 
 const axiosInstance = axios.create({  
     baseURL: "http://localhost:1000",  
