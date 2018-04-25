@@ -19,36 +19,13 @@
                             </Input>
                         </Col>
                     </Row>
-                    <Table @on-selection-change="selectChange" ref="table"  @on-select-all="selectChange" class="margin-bottom-10"
+                    <Table ref="table"  class="margin-bottom-10"
                          :columns="columns" :loading="setting.loading"  :border="setting.showBorder" :data="data.records"></Table>
                     <Page :total="data.pages" class="tr" @on-change="pageChange" :current.sync="dataFilter.page" :page-size="dataFilter.pageSize"
                       @on-page-size-change="pageSizeChange" show-elevator show-sizer></Page>
                 </template>
             </div>
         </Card>
-        <Modal v-model="modal.show" :title="modal.type==1 ? '添加用户':'编辑用户'"
-             :mask-closable="false">
-            <Form :model="modal.data" :label-width="80">
-                <FormItem v-if="modal.type==2" label="ID">
-                    <Input disabled :value="modal.data.id"></Input>
-                </FormItem>
-                <FormItem v-if="modal.type==1 && modal.data.parentName!=null" label="父级名称">
-                    <Input disabled :value="modal.data.parentName"></Input>
-                </FormItem>
-                <FormItem label="用户名">
-                    <Input v-model.trim="modal.data.username"></Input>
-                </FormItem>
-                <FormItem label="年龄">
-                    <InputNumber  :min="0" :step="1" v-model.trim="modal.data.age" style="width:100%"/>
-                </FormItem>
-                <FormItem label="状态">
-                    <Select v-model.trim="modal.data.status" style="width:100%">
-                        <Option v-for="item in [{label:'正常',value:1},{label:'锁定',value:0}]"
-                         :value="item.value" :key="item.value">{{ item.label }}</Option>
-                    </Select>
-                </FormItem>
-            </Form>
-        </Modal>
         <Modal v-model="removeModal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
                 <Icon type="information-circled"></Icon>
@@ -61,26 +38,27 @@
                 <Button type="error" size="large" long :loading="setting.loading" @click="removeUser">确认删除</Button>
             </div>
         </Modal>
+        <AddUser v-if="addUserModal" :roles="roles" @cancel="onModalCancel"/>
+        <UpdateUser v-if="updateUserModal" :roles="roles" :uid="updateUserId" @cancel="onModalCancel"/>
+        <ResetPassword v-if="resetPasswordModal" :uid="resetPasswordUid" @cancel="onModalCancel"/>
     </div>
 </template>
 <script>
     import miment from 'miment'
     import { post } from '@/libs/axios-cfg'
+    import AddUser from '@/components/system/user/AddUser'
+    import UpdateUser from '@/components/system/user/UpdateUser'
+    import ResetPassword from '@/components/system/user/ResetPassword'
     export default {
         data () {
             return {
+                addUserModal:false,
+                updateUserModal:false,
+                resetPasswordModal:false,
+                updateUserId:null,
+                resetPasswordUid:null,
                 selections:[],
                 removeModal:false,
-                modal:{
-                    show:true,
-                    type:1,
-                    loading:true,
-                    data:{
-                        username:'',
-                        age:0,
-                        status:1
-                    }
-                },
                 setting:{
                     loading:true,
                     showBorder:true
@@ -131,8 +109,22 @@
                                 }, params.row.status == 1 ? '锁定' : '恢复'),
                                 h('Button', {
                                     props: {type: 'primary',size: 'small'},
-                                    style: {marginRight: '5px'}
+                                    style: {marginRight: '5px'},
+                                    on:{
+                                        click:()=>{
+                                            this.openAddModal(params.row.id)
+                                        }
+                                    }
                                 }, '修改'),
+                                h('Button', {
+                                    props: {type: 'info',size: 'small'},
+                                    style: {marginRight: '5px'},
+                                    on:{
+                                        click:()=>{
+                                            
+                                        }
+                                    }
+                                }, '重置密码'),
                                 h('Button', {
                                     props: {type: 'error',size: 'small'},
                                     on:{
@@ -154,21 +146,35 @@
                     page:1,
                     pageSize:10
                 },
-                removeObject:null
+                removeObject:null,
+                roles:[]
             }
+        },
+        components:{
+            AddUser,UpdateUser
         },
         created(){
             this.getData();
+            this.getRoleList();
         },
         methods:{
+            /**
+             * @description 分页更换事件回调
+             */
             pageChange(p){
                 this.dataFilter.page = p;
                 this.getData();
             },
+            /**
+             * @description 分页每页显示数量改变事件回调
+             */
             pageSizeChange(p){
                 this.dataFilter.pageSize = p;
                 this.getData();
             },
+            /**
+             * @description 删除用户
+             */
             async removeUser(){
                 this.removeModal = false;
                 if(this.removeObject==null){
@@ -187,6 +193,9 @@
                 }
                 this.setting.loading = false;
             },
+            /**
+             * @description 锁定/解锁用户
+             */
             async lockUser(obj){
                 this.setting.loading = true;
                 let status = obj.status;
@@ -206,6 +215,9 @@
                 }
                 this.setting.loading = false;
             },
+            /**
+             * @description 获取用户列表
+             */
             async getData(){
                 this.setting.loading = true;
                 try {
@@ -219,6 +231,58 @@
                 }
                 this.setting.loading = false;
             },
+            /**
+             * @description 获取角色列表
+             */
+            async getRoleList(){
+                try {
+                    let res = await post('/system/role/list',{
+                        page:1,
+                        pageSize:1000
+                    })
+                    this.roles = res.data.records;
+                } catch (error) {
+                    this.$throw(error)
+                }
+            },
+             /**
+             * @description 打开模态窗口
+             * @param uid 用户ID
+             * @param type 打开类型
+             */
+            openAddModal(uid,type = 'add'){
+                if(uid==null){
+                    this.addUserModal = true;
+                }else if(type==='add'){
+                    this.updateUserId = uid;
+                    this.updateUserModal = true;
+                }else{
+                    this.resetPasswordUid = uid;
+                    this.resetPasswordModal = true;
+                }
+            },
+            /**
+             * @description 关闭模态窗口
+             * @param type 窗口类型
+             * @param reload 是否重新加载数据
+             */
+            onModalCancel(type,reload = false){
+                switch(type){
+                    case 'add':{
+                        this.addUserModal = false;
+                    };break;
+                    case 'update':{
+                        this.updateUserModal = false;
+                    };break;
+                    case 'reset':{
+                        this.resetPasswordModal = false;
+                    };break;
+                }
+                if(reload) this.getData();
+            },
+            /**
+             * @description 导出表格CSV
+             */
             exportData(type){
                 if (type === 1) {
                     this.$refs.table.exportCsv({

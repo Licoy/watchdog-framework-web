@@ -77,7 +77,7 @@ export default {
       },
       async getAllResource(){
         try {
-            let res = await post('/system/role/add/all-resource')
+            let res = await post('/system/role/add/allResource')
             let newData = res.data
             this.dealPostData(newData);
             this.formItem.permissions = newData;

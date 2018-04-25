@@ -19,7 +19,7 @@
                             </Input>
                         </Col>
                     </Row>
-                    <Table @on-selection-change="selectChange" ref="table"  @on-select-all="selectChange" class="margin-bottom-10" :columns="columns" 
+                    <Table  ref="table"  class="margin-bottom-10" :columns="columns" 
                         :loading="setting.loading"  :border="setting.showBorder" :data="data.records"></Table>
                      <Page :total="data.pages" class="tr" @on-change="pageChange" :current.sync="dataFilter.page" :page-size="dataFilter.pageSize"
                       @on-page-size-change="pageSizeChange" show-elevator show-sizer></Page>
