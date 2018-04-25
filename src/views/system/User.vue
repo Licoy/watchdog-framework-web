@@ -40,7 +40,7 @@
         </Modal>
         <AddUser v-if="addUserModal" :roles="roles" @cancel="onModalCancel"/>
         <UpdateUser v-if="updateUserModal" :roles="roles" :uid="updateUserId" @cancel="onModalCancel"/>
-        <ResetPassword v-if="resetPasswordModal" :uid="resetPasswordUid" @cancel="onModalCancel"/>
+        <ResetPassword v-if="resetPasswordModal" :user="resetPasswordUser" @cancel="onModalCancel"/>
     </div>
 </template>
 <script>
@@ -56,7 +56,7 @@
                 updateUserModal:false,
                 resetPasswordModal:false,
                 updateUserId:null,
-                resetPasswordUid:null,
+                resetPasswordUser:null,
                 selections:[],
                 removeModal:false,
                 setting:{
@@ -121,7 +121,7 @@
                                     style: {marginRight: '5px'},
                                     on:{
                                         click:()=>{
-                                            
+                                            this.openAddModal(params.row,'resetPassword')
                                         }
                                     }
                                 }, '重置密码'),
@@ -151,7 +151,7 @@
             }
         },
         components:{
-            AddUser,UpdateUser
+            AddUser,UpdateUser,ResetPassword
         },
         created(){
             this.getData();
@@ -257,7 +257,7 @@
                     this.updateUserId = uid;
                     this.updateUserModal = true;
                 }else{
-                    this.resetPasswordUid = uid;
+                    this.resetPasswordUser = uid;
                     this.resetPasswordModal = true;
                 }
             },
@@ -274,7 +274,7 @@
                     case 'update':{
                         this.updateUserModal = false;
                     };break;
-                    case 'reset':{
+                    case 'resetPassword':{
                         this.resetPasswordModal = false;
                     };break;
                 }

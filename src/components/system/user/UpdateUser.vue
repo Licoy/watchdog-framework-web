@@ -47,7 +47,10 @@ export default {
         roles: []
       },
       ruls: {
-        username: [{ required: true, message: "用户名不能为空" }],
+        username: [
+            { required: true, message: "用户名不能为空" },
+            {pattern:/^(\w){4,16}$/,message:'用户名应为[A-Za-z0-9_]组成的4-16位字符'}
+        ],
         age: [{ required: true, message: "年龄不能为空" }],
         status: [{ required: true, message: "用户状态不能为空" }],
         roles: [{ required: true, message: "请至少选择一个角色" }]
