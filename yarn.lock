@@ -1816,6 +1816,10 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+dayjs@^1.5.14:
+  version "1.5.14"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.5.14.tgz#3a5e5588f22031af8b81603e55f1aee961e3038c"
+
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -3997,10 +4001,6 @@ mime@1.4.1:
 mime@^1.2.11, mime@^1.4.1, mime@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
-
-miment@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/miment/-/miment-0.0.5.tgz#fcd9476abac9d84e693066e8d6cfe34723f58423"
 
 mimic-fn@^1.0.0:
   version "1.2.0"

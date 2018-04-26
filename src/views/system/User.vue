@@ -44,7 +44,7 @@
     </div>
 </template>
 <script>
-    import miment from 'miment'
+    import dayjs from 'dayjs'
     import { post } from '@/libs/axios-cfg'
     import AddUser from '@/components/system/user/AddUser'
     import UpdateUser from '@/components/system/user/UpdateUser'
@@ -87,7 +87,7 @@
                         title: '创建日期',
                         key: 'createDate',
                         render:(h,params)=>{
-                            return h('span',miment(params.row.createDate).format('YYYY年MM月DD日 hh时mm分ss秒'))
+                            return h('span',dayjs(params.row.createDate).format('YYYY年MM月DD日 HH:mm:ss'))
                         },
                         sortable: true
                     },

@@ -104,7 +104,6 @@
     </div>
 </template>
 <script>
-    import miment from 'miment'
     import { post } from '@/libs/axios-cfg'
     export default {
         data () {
