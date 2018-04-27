@@ -58,7 +58,7 @@ export default {
                     name: name
                 });
             }
-            this.$emit('on-change', name);
+            //this.$emit('on-change', name);
         }
     }
 };

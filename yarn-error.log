@@ -1,5 +1,5 @@
 Arguments: 
-  D:\softs\nodejs\node.exe D:\softs\nodejs\node_modules\yarn\bin\yarn.js remove minment
+  D:\softs\nodejs\node.exe D:\softs\nodejs\node_modules\yarn\bin\yarn.js install
 
 PATH: 
   D:\softs\Python\Python35\Scripts\;D:\softs\Python\Python35\;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Files\cpp\bin\Intel64;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\MinGW\bin;E:\lua5.3;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;D:\softs\Git\cmd;D:\softs\TortoiseGit\bin;D:\softs\apache-maven-3.5.2\bin;D:\softs\nvm;D:\softs\nodejs;D:\softs\MongoDB\Server\3.6\bin;C:\Users\Administrator\AppData\Local\Yarn\bin;D:\softs\Redis\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;D:\softs\Microsoft VS Code\bin;D:\softs\nvm;D:\softs\nodejs
@@ -34,10 +34,10 @@ npm manifest:
     "license": "MIT",
     "dependencies": {
       "axios": "^0.18.0",
-      "iview": "^2.13.0",
+      "dayjs": "^1.5.14",
+      "iview": "^2.10.1",
       "js-cookie": "^2.2.0",
       "js-md5": "^0.7.3",
-      "miment": "^0.0.5",
       "string-format": "^1.0.0",
       "vue": "^2.5.2",
       "vue-router": "^3.0.1",
@@ -411,12 +411,6 @@ Lockfile:
   async-each@^1.0.0:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
-  
-  async-validator@^1.8.2:
-    version "1.8.2"
-    resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-1.8.2.tgz#b77597226e96242f8d531c0d46ae295f62422ba4"
-    dependencies:
-      babel-runtime "6.x"
   
   async@1.5.0:
     version "1.5.0"
@@ -984,7 +978,7 @@ Lockfile:
       mkdirp "^0.5.1"
       source-map-support "^0.4.15"
   
-  babel-runtime@6.x, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+  babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
     version "6.26.0"
     resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
     dependencies:
@@ -1059,10 +1053,6 @@ Lockfile:
       isobject "^3.0.1"
       mixin-deep "^1.2.0"
       pascalcase "^0.1.1"
-  
-  batch-processor@^1.0.0:
-    version "1.0.0"
-    resolved "https://registry.yarnpkg.com/batch-processor/-/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
   
   batch@0.6.1:
     version "0.6.1"
@@ -1915,6 +1905,10 @@ Lockfile:
     version "0.1.4"
     resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
   
+  dayjs@^1.5.14:
+    version "1.5.14"
+    resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.5.14.tgz#3a5e5588f22031af8b81603e55f1aee961e3038c"
+  
   de-indent@^1.0.2:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -1950,10 +1944,6 @@ Lockfile:
   deep-is@~0.1.3:
     version "0.1.3"
     resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
-  
-  deepmerge@^2.1.0:
-    version "2.1.0"
-    resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.1.0.tgz#511a54fff405fc346f0240bb270a3e9533a31102"
   
   define-properties@^1.1.2:
     version "1.1.2"
@@ -2186,12 +2176,6 @@ Lockfile:
   electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30:
     version "1.3.42"
     resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.42.tgz#95c33bf01d0cc405556aec899fe61fd4d76ea0f9"
-  
-  element-resize-detector@^1.1.14:
-    version "1.1.14"
-    resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.1.14.tgz#af064a0a618a820ad570a95c5eec5b77be0128c1"
-    dependencies:
-      batch-processor "^1.0.0"
   
   elliptic@^6.0.0:
     version "6.4.0"
@@ -3677,25 +3661,9 @@ Lockfile:
     version "0.1.2"
     resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   
-  iview@^2.13.0:
-    version "2.13.0"
-    resolved "https://registry.yarnpkg.com/iview/-/iview-2.13.0.tgz#34cab55267e1f9a3bde4cbf8bd35ceff2f41b7fb"
-    dependencies:
-      async-validator "^1.8.2"
-      deepmerge "^2.1.0"
-      element-resize-detector "^1.1.14"
-      js-calendar "^1.2.3"
-      lodash.throttle "^4.1.1"
-      popper.js "^1.14.1"
-      tinycolor2 "^1.4.1"
-  
   js-base64@^2.1.9:
     version "2.4.3"
     resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.3.tgz#2e545ec2b0f2957f41356510205214e98fad6582"
-  
-  js-calendar@^1.2.3:
-    version "1.2.3"
-    resolved "https://registry.yarnpkg.com/js-calendar/-/js-calendar-1.2.3.tgz#a583b0644b4e695ba394f344d103dbcc7a7a7d3e"
   
   js-cookie@^2.2.0:
     version "2.2.0"
@@ -3907,10 +3875,6 @@ Lockfile:
     version "4.1.2"
     resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   
-  lodash.throttle@^4.1.1:
-    version "4.1.1"
-    resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
-  
   lodash.uniq@^4.5.0:
     version "4.5.0"
     resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -4096,10 +4060,6 @@ Lockfile:
   mime@^1.2.11, mime@^1.4.1, mime@^1.5.0:
     version "1.6.0"
     resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
-  
-  miment@^0.0.5:
-    version "0.0.5"
-    resolved "https://registry.yarnpkg.com/miment/-/miment-0.0.5.tgz#fcd9476abac9d84e693066e8d6cfe34723f58423"
   
   mimic-fn@^1.0.0:
     version "1.2.0"
@@ -4660,10 +4620,6 @@ Lockfile:
   pluralize@^7.0.0:
     version "7.0.0"
     resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
-  
-  popper.js@^1.14.1:
-    version "1.14.3"
-    resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.3.tgz#1438f98d046acf7b4d78cd502bf418ac64d4f095"
   
   portfinder@^1.0.9:
     version "1.0.13"
@@ -6018,10 +5974,6 @@ Lockfile:
     dependencies:
       setimmediate "^1.0.4"
   
-  tinycolor2@^1.4.1:
-    version "1.4.1"
-    resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
-  
   title-case@^2.1.0:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/title-case/-/title-case-2.1.1.tgz#3e127216da58d2bc5becf137ab91dae3a7cd8faa"
@@ -6649,10 +6601,7 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: This module isn't specified in a manifest.
-      at new MessageError (D:\softs\nvm\v8.11.1\node_modules\yarn\lib\cli.js:186:110)
-      at Object.<anonymous> (D:\softs\nvm\v8.11.1\node_modules\yarn\lib\cli.js:60445:15)
-      at Generator.next (<anonymous>)
-      at step (D:\softs\nvm\v8.11.1\node_modules\yarn\lib\cli.js:98:30)
-      at D:\softs\nvm\v8.11.1\node_modules\yarn\lib\cli.js:109:13
-      at <anonymous>
+  Error: connect ETIMEDOUT 104.16.61.173:443
+      at Object._errnoException (util.js:1022:11)
+      at _exceptionWithHostPort (util.js:1044:20)
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
