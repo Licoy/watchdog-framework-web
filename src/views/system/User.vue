@@ -84,6 +84,25 @@
                         sortable: true
                     },
                     {
+                        title: '角色组',
+                        key: 'roles', 
+                        render:(h,params)=>{
+                            let roles = []
+                            if(params.row.roles!=null && params.row.roles.length>0){
+                                params.row.roles.forEach(element => {
+                                    let role = h('Tag',{
+                                        props:{
+                                            color:"blue"
+                                        }
+                                    },element.name)
+                                    roles.push(role)
+                                });
+                                return h('div',roles)
+                            }
+                            return h('span','空')
+                        }
+                    },
+                    {
                         title: '创建日期',
                         key: 'createDate',
                         render:(h,params)=>{

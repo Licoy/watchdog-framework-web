@@ -184,24 +184,11 @@
             this.getData();
         },
         methods:{
-            async getData(showMsg = true){
+            async getData(){
                 this.setting.loading = true;
-                if(showMsg){
-                    this.$Message.loading({
-                        content:"资源数据加载中...",
-                        duration:0
-                    })
-                }
                 try {
                     let res = await post('/system/resource/list')
                     this.datas = res.data;
-                    if(showMsg){
-                        this.$Message.destroy()
-                        this.$Message.success({
-                            content:"资源数据加载完成",
-                            duration: 1.5
-                        })
-                    }
                 } catch (error) {
                     this.$throw(error)
                 }
