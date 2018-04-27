@@ -147,7 +147,7 @@
                     pageSize:10
                 },
                 removeObject:null,
-                roles:[]
+                roles:null
             }
         },
         components:{
@@ -155,7 +155,6 @@
         },
         created(){
             this.getData();
-            this.getRoleList();
         },
         methods:{
             /**
@@ -251,6 +250,11 @@
              * @param type 打开类型
              */
             openAddModal(uid,type = 'add'){
+                if(uid==null || type==='add'){
+                    if(this.roles==null){
+                        this.getRoleList();
+                    }
+                }
                 if(uid==null){
                     this.addUserModal = true;
                 }else if(type==='add'){
