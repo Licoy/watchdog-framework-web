@@ -71,7 +71,7 @@
                             resources.forEach(element => {
                                 let r = h('Tag',{
                                     props:{
-                                        color:'green',
+                                        color:element.color=='' ? 'green' : element.color,
                                         type:'dot'
                                     }
                                 },element.name);

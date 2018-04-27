@@ -10,7 +10,15 @@ const axiosInstance = axios.create({
     timeout: 3000,
     withCredentials: true
 });
+axios.interceptors.request.use(function (config) {
+    iView.LoadingBar.start();
+    return config;
+  }, function (error) {
+    iView.LoadingBar.finish();
+    return Promise.reject(error);
+  })
 axiosInstance.interceptors.response.use(res => {
+    iView.LoadingBar.finish();
     //-6表明身份异常或未登录
     if(res.data.status == -6){
         store.commit('logout', this);
@@ -25,6 +33,7 @@ axiosInstance.interceptors.response.use(res => {
     }
     return res.data;
 }, error => {
+    iView.LoadingBar.finish();
     throw new ResError("请求服务器失败，请检查服务是否正常！")
     return error
 })

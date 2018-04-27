@@ -46,6 +46,12 @@
                             <span v-if="scope.row.icon!=null && scope.row.icon!=''"><Icon :type="scope.row.icon"></Icon></span>
                             <span v-else>-</span>
                         </template>
+                        <template slot="color" slot-scope="scope">
+                            <span v-if="scope.row.color!=null && scope.row.color!=''">
+                                <Icon type="paintbucket" :color="scope.row.color"></Icon>
+                            </span>
+                            <span v-else>-</span>
+                        </template>
                         <template slot="action" slot-scope="scope">
                             <Button type="primary" @click="edit(scope.row)" size="small">编辑</Button>
                             <Button type="success" @click="openAddModal(scope.row)" size="small">添加下级</Button>
@@ -80,6 +86,9 @@
                 </FormItem>
                 <FormItem label="权限标识">
                     <Input v-model.trim="modal.data.permission"></Input>
+                </FormItem>
+                <FormItem label="颜色标示">
+                     <color-picker v-model="modal.data.color" recommend></color-picker>
                 </FormItem>
                 <FormItem label="图标">
                     <Input v-model.trim="modal.data.icon"></Input>
@@ -147,15 +156,23 @@
                         prop: 'permission',
                     },
                     {
+                        label: '颜色',
+                        prop: 'color',
+                        type: 'template',
+                        template: 'color',
+                        width:'60px'
+                    },
+                    {
                         label: '图标',
                         prop: 'icon',
                         type: 'template',
                         template: 'icon',
+                        width:'80px'
                     },
                     {
                         label: '排序',
                         prop: 'sort',
-                        minWidth: '50px',
+                        width:'100px'
                     },
                     {
                         label: '操作',
@@ -174,7 +191,8 @@
                         url:'',
                         permission:'',
                         icon:'',
-                        sort:0
+                        sort:0,
+                        color:'#19BE6B'
                     }
                 },
                 removeObject:null
@@ -272,7 +290,8 @@
                     url:row.url,
                     permission:row.permission,
                     icon:row.icon,
-                    sort:row.sort
+                    sort:row.sort,
+                    color:row.color=='' ? '#19BE6B' : row.color
                 }
                 this.modal.show = true;
             },
@@ -287,7 +306,8 @@
                     permission:parent==null ? null : parent.permission,
                     icon:'',
                     sort:0,
-                    parentName:parent==null ? null : parent.name
+                    parentName:parent==null ? null : parent.name,
+                    color:'#19BE6B'
                 }
                 this.modal.show = true;
             }

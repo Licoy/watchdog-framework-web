@@ -13,7 +13,7 @@ Vue.use(ZkTable)
 const errorHandler = (error, vm)=>{
     iView.Message.destroy()
     if(!(error instanceof ResError)){
-        iView.Message.error("系统出了点小差，请联系管理员修复一下~");
+        //iView.Message.error("系统出了点小差，请联系管理员修复一下~");
         console.error(error)
     }else{
         iView.Message.error(error.message);
