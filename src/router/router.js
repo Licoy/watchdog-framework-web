@@ -76,6 +76,7 @@ export const appRouter = [
             { path: 'user', icon: 'person', title: '用户管理', name: 'system_user', component: () => import('@/views/system/User.vue') },
             { path: 'person-stalker', icon: 'compose', title: '角色管理', name: 'system_role', component: () => import('@/views/system/Role.vue') },
             { path: 'resource', icon: 'lock-combination', title: '资源管理', name: 'system_resource', component: () => import('@/views/system/Resource.vue') },
+            { path: 'log', icon: 'leaf', title: '系统日志', name: 'system_log', component: () => import('@/views/system/Log.vue') },
         ]
     }
 ];

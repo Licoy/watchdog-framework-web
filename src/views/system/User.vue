@@ -21,7 +21,7 @@
                     </Row>
                     <Table ref="table"  class="margin-bottom-10"
                          :columns="columns" :loading="setting.loading"  :border="setting.showBorder" :data="data.records"></Table>
-                    <Page :total="data.pages" class="tr" @on-change="pageChange" :current.sync="dataFilter.page" :page-size="dataFilter.pageSize"
+                    <Page :total="data.total" class="tr" @on-change="pageChange" :current.sync="data.current" :page-size="data.size"
                       @on-page-size-change="pageSizeChange" show-elevator show-sizer></Page>
                 </template>
             </div>
