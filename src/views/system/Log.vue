@@ -56,7 +56,14 @@
                     {title: '用户ID', key: 'uid'},
                     {title: '用户名', key: 'username'},
                     {title: '动作名称', key: 'actionName'},
-                    {title: 'IP', key: 'ip'},
+                    {title: 'IP', key: 'ip',render:(h,params)=>{
+                        let ip = params.row.ip;
+                        let ipSplit = ip.split(".")
+                        if(ipSplit.length==4){
+                            return h('span',ipSplit[0]+'.'+'***'+'.'+ipSplit[2]+'.'+ipSplit[3])
+                        }
+                        return h('span',ip)
+                    }},
                     {title: '请求类型', key: 'ajax',render:(h,params)=>{
                         return h('span',params.row.ajax == 0 ? '普通请求' : 'AJAX请求')
                     }},
