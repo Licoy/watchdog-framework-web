@@ -4,14 +4,18 @@ import { ResError } from './error/ResError';
 import sf from 'string-format';
 import store from '@/store';
 import {router} from '@/router/index';
+import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({  
     baseURL: "http://localhost:1000",  
     timeout: 3000,
-    withCredentials: true
+    // withCredentials: true
 });
-axios.interceptors.request.use(function (config) {
+axiosInstance.interceptors.request.use(function (config) {
     iView.LoadingBar.start();
+    if(Cookies.get("csrf-token")){
+        config.headers.Authorization = Cookies.get("csrf-token");
+    }
     return config;
   }, function (error) {
     iView.LoadingBar.finish();

@@ -80,6 +80,7 @@
                         password: this.formItem.password
                     })
                     this.$Message.success("登录成功");
+                    Cookies.set('csrf-token', res.data);
                     Cookies.set('user', this.formItem.account);
                     Cookies.set('password', md5(md5(this.formItem.password)));
                     this.$store.commit('setAvator', '');
