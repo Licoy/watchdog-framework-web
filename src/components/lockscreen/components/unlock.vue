@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
 import md5 from 'js-md5';
 export default {
     name: 'Unlock',
@@ -52,7 +51,7 @@ export default {
     },
     methods: {
         validator () {
-            if(Cookies.get('password') == md5(md5(this.password))){
+            if(localStorage.getItem('password') == md5(md5(this.password))){
                 return true;
             }else{
                 return false;
@@ -68,7 +67,7 @@ export default {
                 this.avatorLeft = '0px';
                 this.inputLeft = '400px';
                 this.password = '';
-                Cookies.set('locking', '0');
+                localStorage.setItem('locking', '0');
                 this.$emit('on-unlock');
             } else {
                 this.$Message.error('密码错误，请重新输入。');

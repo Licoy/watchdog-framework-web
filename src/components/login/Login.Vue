@@ -32,7 +32,6 @@
   </div>
 </template>
 <script>
-  import Cookies from 'js-cookie';
   import md5 from 'js-md5';
   import { post } from '@/libs/axios-cfg'
   export default {
@@ -80,9 +79,9 @@
                         password: this.formItem.password
                     })
                     this.$Message.success("登录成功");
-                    Cookies.set('csrf-token', res.data);
-                    Cookies.set('user', this.formItem.account);
-                    Cookies.set('password', md5(md5(this.formItem.password)));
+                    localStorage.setItem('csrf-token', res.data);
+                    localStorage.setItem('user', this.formItem.account);
+                    localStorage.setItem('password', md5(md5(this.formItem.password)));
                     this.$store.commit('setAvator', '');
                     this.$router.push({
                         name: 'home_index'

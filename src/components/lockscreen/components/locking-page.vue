@@ -8,7 +8,6 @@
 
 <script>
 import unlock from './unlock.vue';
-import Cookies from 'js-cookie';
 export default {
     components: {
         unlock
@@ -25,7 +24,7 @@ export default {
             lockScreenBack.style.zIndex = -1;
             lockScreenBack.style.boxShadow = '0 0 0 0 #667aa6 inset';
             this.$router.push({
-                name: Cookies.get('last_page_name') // 解锁之后跳转到锁屏之前的页面
+                name: localStorage.getItem('last_page_name') // 解锁之后跳转到锁屏之前的页面
             });
         }
     },

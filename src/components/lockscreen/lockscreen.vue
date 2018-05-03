@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
 const setLockBackSize = () => {
     let x = document.body.clientWidth;
     let y = document.body.clientHeight;
@@ -29,14 +28,14 @@ export default {
             lockScreenBack.style.zIndex = 10000;
             lockScreenBack.style.boxShadow = '0 0 0 ' + this.lockScreenSize + 'px #667aa6 inset';
             this.showUnlock = true;
-            Cookies.set('last_page_name', this.$route.name); // 本地存储锁屏之前打开的页面以便解锁后打开
+            localStorage.setItem('last_page_name', this.$route.name); // 本地存储锁屏之前打开的页面以便解锁后打开
             setTimeout(() => {
                 lockScreenBack.style.transition = 'all 0s';
                 this.$router.push({
                     name: 'locking'
                 });
             }, 800);
-            Cookies.set('locking', '1');
+            localStorage.setItem('locking', '1');
         }
     },
     mounted () {

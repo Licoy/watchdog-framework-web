@@ -4,7 +4,6 @@ import { ResError } from './error/ResError';
 import sf from 'string-format';
 import store from '@/store';
 import {router} from '@/router/index';
-import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({  
     baseURL: "http://localhost:1000",  
@@ -13,8 +12,8 @@ const axiosInstance = axios.create({
 });
 axiosInstance.interceptors.request.use(function (config) {
     iView.LoadingBar.start();
-    if(Cookies.get("csrf-token")){
-        config.headers.Authorization = Cookies.get("csrf-token");
+    if(localStorage.getItem("csrf-token")){
+        config.headers.Authorization = localStorage.getItem("csrf-token");
     }
     return config;
   }, function (error) {

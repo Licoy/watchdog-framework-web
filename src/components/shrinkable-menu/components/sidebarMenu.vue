@@ -49,13 +49,15 @@ export default {
         },
     },
     updated () {
-        this.$refs.sideMenu.$children.forEach((item) => {
-            this.openNames.forEach(e=>{
-                if(e==item.name){
-                    item.opened = true;
-                }
+        if(this.$refs.sideMenu!=undefined && this.$refs.sideMenu.$children!=undefined && this.$refs.sideMenu.$children.length>0){
+            this.$refs.sideMenu.$children.forEach((item) => {
+                this.openNames.forEach(e=>{
+                    if(e==item.name){
+                        item.opened = true;
+                    }
+                })
             })
-        })
+        }
     }
 
 };

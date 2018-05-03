@@ -67,7 +67,6 @@
     </div>
 </template>
 <script>
-    import Cookies from 'js-cookie';
     import shrinkableMenu from '@/components/shrinkable-menu/shrinkable-menu.vue';
     import tagsPageOpened from '@/components/tags-page-opened.vue';
     import breadcrumbNav from '@/components/breadcrumb-nav.vue';
@@ -122,7 +121,7 @@
                 if (pathArr.length >= 2) {
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
-                this.userName = Cookies.get('user');
+                this.userName = localStorage.getItem('user');
                 let messageCount = 3;
                 this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
