@@ -43,8 +43,8 @@
     </div>
 </template>
 <script>
-    import AddRole from '@/components/system/role/AddRole'
-    import UpdateRole from '@/components/system/role/UpdateRole'
+    import AddRole from './components/add.vue'
+    import UpdateRole from './components/update.vue'
     import { post } from '@/libs/axios-cfg'
     export default {
         data () {

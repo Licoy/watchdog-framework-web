@@ -97,7 +97,7 @@
 </script>
 <style>
 body{
-    background-image: url("../../images/login-bg.jpg");
+    background-image: url("../../../images/login-bg.jpg");
     height: 100%;
   }
 .login-model{

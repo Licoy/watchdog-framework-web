@@ -46,9 +46,9 @@
 <script>
     import dayjs from 'dayjs'
     import { post } from '@/libs/axios-cfg'
-    import AddUser from '@/components/system/user/AddUser'
-    import UpdateUser from '@/components/system/user/UpdateUser'
-    import ResetPassword from '@/components/system/user/ResetPassword'
+    import AddUser from './components/add.vue'
+    import UpdateUser from './components/update.vue'
+    import ResetPassword from './components/reset-password.vue'
     export default {
         data () {
             return {

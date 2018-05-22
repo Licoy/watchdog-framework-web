@@ -6,7 +6,7 @@ export const loginRouter = {
     meta: {
         title: '登录'
     },
-    component: () => import('@/views/Login')
+    component: () => import('@/views/login')
 };
 
 export const page404 = {
@@ -15,7 +15,7 @@ export const page404 = {
     meta: {
         title: '404-页面不存在'
     },
-    component: () => import('@/components/error-page/404.vue')
+    component: () => import('@/common/components/error-page/404.vue')
 };
 
 export const page403 = {
@@ -24,7 +24,7 @@ export const page403 = {
         title: '403-权限不足'
     },
     name: 'error-403',
-    component: () => import('@/components/error-page/403.vue')
+    component: () => import('@/common/components/error-page/403.vue')
 };
 
 export const page500 = {
@@ -33,13 +33,13 @@ export const page500 = {
         title: '500-服务端错误'
     },
     name: 'error-500',
-    component: () => import('@/components/error-page/500.vue')
+    component: () => import('@/common/components/error-page/500.vue')
 };
 
 export const locking = {
     path: '/locking',
     name: 'locking',
-    component: () => import('@/components/lockscreen/components/locking-page.vue')
+    component: () => import('@/common/components/lockscreen/components/locking-page.vue')
 };
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
@@ -47,9 +47,9 @@ export const otherRouter = {
     path: '/',
     name: 'otherRouter',
     redirect: '/home',
-    component: () => import('@/views/Main.vue'),
+    component: () => import('@/views/main.vue'),
     children: [
-        { path: 'account', title: '账户中心', name: 'account', component: () => import('@/views/account/Account.vue') }
+        { path: 'account', title: '账户中心', name: 'account', component: () => import('@/views/account') }
     ]
 };
 
@@ -60,9 +60,9 @@ export const appRouter = [
         icon: 'home',
         name: 'home',
         title: '首页',
-        component: () => import('@/views/Main.vue'),
+        component: () => import('@/views/main.vue'),
         children: [
-            { path: 'index', title: '首页', name: 'home_index', component: () => import('@/views/home/Home.vue') }
+            { path: 'index', title: '首页', name: 'home_index', component: () => import('@/views/home') }
         ]
     },
     {
@@ -70,12 +70,12 @@ export const appRouter = [
         icon: 'ios-gear',
         name: 'system',
         title: '系统设置',
-        component: () => import('@/views/Main.vue'),
+        component: () => import('@/views/main.vue'),
         children: [
-            { path: 'user', icon: 'person', title: '用户管理', name: 'system_user', component: () => import('@/views/system/User.vue') },
-            { path: 'person-stalker', icon: 'compose', title: '角色管理', name: 'system_role', component: () => import('@/views/system/Role.vue') },
-            { path: 'resource', icon: 'lock-combination', title: '资源管理', name: 'system_resource', component: () => import('@/views/system/Resource.vue') },
-            { path: 'log', icon: 'leaf', title: '系统日志', name: 'system_log', component: () => import('@/views/system/Log.vue') },
+            { path: 'user', icon: 'person', title: '用户管理', name: 'system_user', component: () => import('@/views/system/user') },
+            { path: 'person-stalker', icon: 'compose', title: '角色管理', name: 'system_role', component: () => import('@/views/system/role') },
+            { path: 'resource', icon: 'lock-combination', title: '资源管理', name: 'system_resource', component: () => import('@/views/system/resource') },
+            { path: 'log', icon: 'leaf', title: '系统日志', name: 'system_log', component: () => import('@/views/system/log') },
         ]
     }
 ];

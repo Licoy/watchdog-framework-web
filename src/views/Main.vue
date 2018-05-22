@@ -67,13 +67,13 @@
     </div>
 </template>
 <script>
-    import shrinkableMenu from '@/components/shrinkable-menu/shrinkable-menu.vue';
-    import tagsPageOpened from '@/components/tags-page-opened.vue';
-    import breadcrumbNav from '@/components/breadcrumb-nav.vue';
-    import fullScreen from '@/components/fullscreen.vue';
-    import lockScreen from '@/components/lockscreen/lockscreen.vue';
+    import shrinkableMenu from '@/common/components/shrinkable-menu/shrinkable-menu.vue';
+    import tagsPageOpened from '@/common/components/tags-page-opened.vue';
+    import breadcrumbNav from '@/common/components/breadcrumb-nav.vue';
+    import fullScreen from '@/common/components/fullscreen.vue';
+    import lockScreen from '@/common/components/lockscreen/lockscreen.vue';
     import util from '@/libs/util.js';
-    import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
+    import scrollBar from '@/common/components/scroll-bar/vue-scroller-bars';
     import { post } from '@/libs/axios-cfg';
     export default {
         components: {

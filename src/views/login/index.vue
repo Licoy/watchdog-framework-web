@@ -1,15 +1,15 @@
 <template>
   <div class="sa-login">
       <PageHeader/>
-      <Login/>
+      <Service/>
   </div>
 </template>
 <script>
-import Login from '@/components/login/Login';
-import PageHeader from '@/components/login/PageHeader';
+import Service from './components/service';
+import PageHeader from './components/page-header';
 export default {
     components:{
-        Login,PageHeader
+        Service,PageHeader
     },
     data(){
         return {
