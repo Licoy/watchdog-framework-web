@@ -1,7 +1,6 @@
 import {otherRouter, appRouter} from '@/router/router';
 import Util from '@/libs/util';
 import Vue from 'vue';
-
 const app = {
     state: {
         cachePage: [],

@@ -74,6 +74,7 @@
     import lockScreen from '@/components/lockscreen/lockscreen.vue';
     import util from '@/libs/util.js';
     import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
+    import { post } from '@/libs/axios-cfg';
     export default {
         components: {
             shrinkableMenu,
@@ -90,6 +91,9 @@
                 isFullScreen: false,
                 openedSubmenuArr: this.$store.state.app.openedSubmenuArr
             };
+        },
+        updated(){
+            this.getPermission();
         },
         computed: {
             menuList () {
@@ -115,6 +119,10 @@
             }
         },
         methods: {
+            async getPermission(){
+                // let res = await post('/account/current');
+                // console.log(res)
+            },
             init () {
                 let pathArr = util.setCurrentPath(this, this.$route.name);
                 this.$store.commit('updateMenulist');

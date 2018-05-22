@@ -1,4 +1,3 @@
-import Main from '@/views/Main.vue';
 
 // 不作为Main组件的子页面展示的页面单独写，如下
 export const loginRouter = {
@@ -48,7 +47,7 @@ export const otherRouter = {
     path: '/',
     name: 'otherRouter',
     redirect: '/home',
-    component: Main,
+    component: () => import('@/views/Main.vue'),
     children: [
         { path: 'account', title: '账户中心', name: 'account', component: () => import('@/views/account/Account.vue') }
     ]
@@ -61,7 +60,7 @@ export const appRouter = [
         icon: 'home',
         name: 'home',
         title: '首页',
-        component: Main,
+        component: () => import('@/views/Main.vue'),
         children: [
             { path: 'index', title: '首页', name: 'home_index', component: () => import('@/views/home/Home.vue') }
         ]
@@ -71,7 +70,7 @@ export const appRouter = [
         icon: 'ios-gear',
         name: 'system',
         title: '系统设置',
-        component: Main,
+        component: () => import('@/views/Main.vue'),
         children: [
             { path: 'user', icon: 'person', title: '用户管理', name: 'system_user', component: () => import('@/views/system/User.vue') },
             { path: 'person-stalker', icon: 'compose', title: '角色管理', name: 'system_role', component: () => import('@/views/system/Role.vue') },
@@ -80,7 +79,6 @@ export const appRouter = [
         ]
     }
 ];
-
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,
