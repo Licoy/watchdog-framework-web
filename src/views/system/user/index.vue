@@ -268,15 +268,15 @@
              * @param uid 用户ID
              * @param type 打开类型
              */
-            openAddModal(uid,type = 'add'){
-                if(uid==null || type==='add'){
+            openAddModal(uid,type = 'update'){
+                if(uid==null || type==='update'){
                     if(this.roles==null){
                         this.getRoleList();
                     }
                 }
                 if(uid==null){
                     this.addUserModal = true;
-                }else if(type==='add'){
+                }else if(type==='update'){
                     this.updateUserId = uid;
                     this.updateUserModal = true;
                 }else{

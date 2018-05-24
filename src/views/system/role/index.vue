@@ -9,7 +9,7 @@
                 <template>
                     <Row>
                         <Col span="15">
-                            <Button type="info" @click="addRoleModal=true"><Icon type="plus"></Icon>&nbsp;添加角色</Button>
+                            <Button type="info" @click="openAddOrUpModal(null)"><Icon type="plus"></Icon>&nbsp;添加角色</Button>
                             <Button :disabled="setting.loading" type="success" @click="getData"><Icon type="refresh"></Icon>&nbsp;刷新数据</Button>
                             <Button type="primary" @click="exportData(1)"><Icon type="ios-download-outline"></Icon>&nbsp;导出表格</Button>
                         </Col>
@@ -26,8 +26,8 @@
                 </template>
             </div>
         </Card>
-        <AddRole v-if="addRoleModal" @cancel="onAddRoleModalCancel"/>
-        <UpdateRole v-if="updateRoleModal" :update-object="updateObject" @cancel="onUpdateRoleModalCancel"/>
+        <AddRole v-if="addRoleModal" :all-resource="allResource" @cancel="onAddRoleModalCancel"/>
+        <UpdateRole v-if="updateRoleModal" :all-resource="allResource" :update-object="updateObject" @cancel="onUpdateRoleModalCancel"/>
         <Modal v-model="removeModal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
                 <Icon type="information-circled"></Icon>
@@ -95,8 +95,7 @@
                                     style: {marginRight: '5px'},
                                     on:{
                                         click:()=>{
-                                            this.updateObject = params.row;
-                                            this.updateRoleModal = true;
+                                            this.openAddOrUpModal(params.row)
                                         }
                                     }
                                 }, '修改'),
@@ -121,7 +120,8 @@
                     page:1,
                     pageSize:10
                 },
-                removeObject:null
+                removeObject:null,
+                allResource:null
             }
         },
         components: {
@@ -138,6 +138,14 @@
             pageSizeChange(p){
                 this.dataFilter.pageSize = p;
                 this.getData();
+            },
+            async getAllResource(){
+                try {
+                    let res = await post('/system/resource/list')
+                    this.allResource = res.data;
+                } catch (error) {
+                    this.$throw(error)
+                }
             },
             async remove(){
                 this.removeModal = false;
@@ -169,6 +177,17 @@
                     this.$throw(error)
                 }
                 this.setting.loading = false;
+            },
+            async openAddOrUpModal(obj,type = 'update'){
+                if(this.allResource===null){
+                   await this.getAllResource();
+                }
+                if(obj===null){
+                    this.addRoleModal = true;
+                }else if(type==='update'){
+                    this.updateObject = obj;
+                    this.updateRoleModal = true;
+                }
             },
             onAddRoleModalCancel(up=false){
                 this.addRoleModal = false;

@@ -41,6 +41,9 @@ export default {
         updateObject:{
             type:Object,
             default:null
+        },
+        allResource:{
+            type:Array
         }
     },
     created(){
@@ -87,14 +90,9 @@ export default {
         this.loading = false;
       },
       async getAllResource(){
-        try {
-            let res = await post('/system/role/add/allResource')
-            let newData = res.data
-            this.dealPostData(newData);
-            this.formItem.permissions = newData;
-        } catch (error) {
-            this.$throw(error)
-        }
+        let res = JSON.parse(JSON.stringify(this.allResource));
+        this.dealPostData(res)
+        this.formItem.permissions = res;
       },
       permissionSync(data,ro){
         if(data!=null && data.length>0){

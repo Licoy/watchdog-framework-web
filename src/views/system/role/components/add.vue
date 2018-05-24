@@ -22,25 +22,30 @@
 <script>
 import { post } from '@/libs/axios-cfg'
 export default {
-  data(){
-      return {
-          formItem: {
-                name:'',
-                permissions: []
-          },
-          showModal:true,
-          loading: false,
-          ruleValidate:{
-              name:[
-                  { required: true, message: '角色名称不能为空'}
-              ]
-          }
-       }
-  },
+    data(){
+        return {
+            formItem: {
+                    name:'',
+                    permissions: []
+            },
+            showModal:true,
+            loading: false,
+            ruleValidate:{
+                name:[
+                    { required: true, message: '角色名称不能为空'}
+                ]
+            }
+        }
+    },
+    props:{
+        allResource:{
+            type:Array
+        }
+    },
     created(){
         this.getAllResource()
     },
-  methods:{
+    methods:{
       cancel(up=false){
           this.$emit('cancel',up);
       },
@@ -76,14 +81,9 @@ export default {
         this.loading = false;
       },
       async getAllResource(){
-        try {
-            let res = await post('/system/resource/list')
-            let newData = res.data
-            this.dealPostData(newData);
-            this.formItem.permissions = newData;
-        } catch (error) {
-            this.$throw(error)
-        }
+        let res = JSON.parse(JSON.stringify(this.allResource));
+        this.dealPostData(res)
+        this.formItem.permissions = res;
       },
       dealPostData(data){
           data.forEach(element => {
