@@ -75,7 +75,7 @@ export default {
         async resetPost(data){
             this.loading = true;
             try {
-                let res = await post('/system/user/resetPassword',data)
+                let res = await post('/system/user/reset-password',data)
                 this.$Message.success("用户 "+this.user.username+" 密码重置成功");
                 this.cancel(true)
             } catch (error) {
