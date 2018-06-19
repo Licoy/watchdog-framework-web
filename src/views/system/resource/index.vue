@@ -52,6 +52,12 @@
                             </span>
                             <span v-else>-</span>
                         </template>
+                        <template slot="verification" slot-scope="scope">
+                            <span v-if="scope.row.verification==true">
+                                是
+                            </span>
+                            <span v-else>否</span>
+                        </template>
                         <template slot="action" slot-scope="scope">
                             <Button type="primary" @click="edit(scope.row)" size="small">编辑</Button>
                             <Button type="success" @click="openAddModal(scope.row)" size="small">添加下级</Button>
@@ -86,6 +92,12 @@
                 </FormItem>
                 <FormItem label="权限标识">
                     <Input v-model.trim="modal.data.permission"></Input>
+                </FormItem>
+                <FormItem label="验证与否">
+                    <Select v-model="modal.data.verification" style="width:100%">
+                        <Option v-for="verOption in [{label:'是',value:'true'},{label:'否',value:'false'}]"
+                         :value="verOption.value" :key="verOption.value">{{ verOption.label }}</Option>
+                    </Select>
                 </FormItem>
                 <FormItem label="颜色标示">
                      <color-picker v-model="modal.data.color" recommend></color-picker>
@@ -156,6 +168,13 @@
                         prop: 'permission',
                     },
                     {
+                        label: '验证与否',
+                        prop: 'verification',
+                        type: 'template',
+                        template: 'verification',
+                        width:'85px'
+                    },
+                    {
                         label: '颜色',
                         prop: 'color',
                         type: 'template',
@@ -192,7 +211,8 @@
                         permission:'',
                         icon:'',
                         sort:0,
-                        color:'#19BE6B'
+                        color:'#19BE6B',
+                        verification:'true'
                     }
                 },
                 removeObject:null
@@ -291,7 +311,8 @@
                     permission:row.permission,
                     icon:row.icon,
                     sort:row.sort,
-                    color:row.color=='' ? '#19BE6B' : row.color
+                    color:row.color=='' ? '#19BE6B' : row.color,
+                    verification:row.verification==null ? 'true' : row.verification==true?'true':'false',
                 }
                 this.modal.show = true;
             },
@@ -307,8 +328,10 @@
                     icon:'',
                     sort:0,
                     parentName:parent==null ? null : parent.name,
+                    verification:parent==null ? 'true' : parent.verification==true?'true':'false',
                     color:'#19BE6B'
                 }
+                console.log(this.modal.data)
                 this.modal.show = true;
             }
         }
