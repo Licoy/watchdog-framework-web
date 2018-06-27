@@ -64,25 +64,6 @@
                 columns: [
                     {title: 'ID', key: 'id',sortable: true},
                     {title: '角色名', key: 'name',sortable: true},
-                    {title: '权限集',key: 'resources',sortable: true, render:(h, params)=>{
-                        let resources = params.row.resources;
-                        if(resources!=null && typeof(resources)=="object" && resources.length > 0){
-                            let ps = [];
-                            resources.forEach(element => {
-                                let r = h('Tag',{
-                                    props:{
-                                        color:element.color=='' ? 'green' : element.color,
-                                        type:'dot'
-                                    }
-                                },element.name);
-                                ps.push(r);
-                                this.dealPostData(element.children,ps, h)
-                            });
-                            return h('div',ps)
-                        }else{
-                            return h('span','空')
-                        }
-                    }},
                     {
                         title: '操作',
                         key: 'action',
@@ -91,6 +72,15 @@
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
+                                    props: {type: 'success',size: 'small'},
+                                    style: {marginRight: '5px'},
+                                    on:{
+                                        click:()=>{
+                                            this.showAllResource(params.row)
+                                        }
+                                    }
+                                }, '查看权限集'),
+                                h('Button', {
                                     props: {type: 'primary',size: 'small'},
                                     style: {marginRight: '5px'},
                                     on:{
@@ -98,7 +88,7 @@
                                             this.openAddOrUpModal(params.row)
                                         }
                                     }
-                                }, '修改'),
+                                }, '修改信息'),
                                 h('Button', {
                                     props: {type: 'error',size: 'small'},
                                     on:{
@@ -213,6 +203,37 @@
                     });
                 }
                 
+            },
+            showAllResource(row){
+                let resources = row.resources;
+                if(resources!=null && typeof(resources)=="object" && resources.length > 0){
+                    this.$Modal.info({
+                        title: row.name+' - 权限集',
+                        width:'40%',
+                        render: (h)=>{
+                            let ps = [];
+                            resources.forEach(element => {
+                                let r = h('Tag',{
+                                    props:{
+                                        color:element.color=='' ? 'green' : element.color,
+                                        type:'dot',
+                                    }
+                                },element.name);
+                                ps.push(r);
+                                this.dealPostData(element.children,ps, h)
+                            });
+                            return h('div',{
+                                style:{padding:'20px 0 10px 0'}
+                            },ps);
+                        }
+                    });
+                }else{
+                    this.$Notice.destroy()
+                    this.$Notice.info({
+                        title:"该角色暂无权限信息",
+                        duration:3
+                    })
+                }
             },
             exportData(type){
                 if (type === 1) {
