@@ -4,9 +4,10 @@ import { ResError } from './error/ResError';
 import sf from 'string-format';
 import store from '@/store';
 import {router} from '@/router/index';
+import config from '../config/index';
 
 const axiosInstance = axios.create({  
-    baseURL: "http://localhost:1000",  
+    baseURL: process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro,  
     timeout: 3000,
     // withCredentials: true
 });

@@ -1,59 +1,48 @@
-import Vue from 'vue';
-import iView from 'iview';
-import Util from '../libs/util';
-import VueRouter from 'vue-router';
-import {routers, otherRouter, appRouter} from './router';
+import Vue from 'vue'
+import Router from 'vue-router'
+import routes from './routers'
+import store from '@/store'
+import iView from 'iview'
+import { getToken, canTurnTo } from '@/libs/util'
 
-Vue.use(VueRouter);
-
-// 路由配置
-const RouterConfig = {
-    // mode: 'history',
-    routes: routers
-};
-
-export const router = new VueRouter(RouterConfig);
+Vue.use(Router)
+const router = new Router({
+  routes,
+  mode: 'history'
+})
+const LOGIN_PAGE_NAME = 'login'
 
 router.beforeEach((to, from, next) => {
-    iView.LoadingBar.start();
-    Util.title(to.meta.title);
-    if (localStorage.getItem('locking') === '1' && to.name !== 'locking') { // 判断当前是否是锁定状态
-        next({
-            replace: true,
-            name: 'locking'
-        });
-    } else if (localStorage.getItem('locking') === '0' && to.name === 'locking') {
-        next(false);
-    } else {
-        if (!localStorage.getItem('user') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
-            next({
-                name: 'login'
-            });
-        } else if (localStorage.getItem('user') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
-            Util.title();
-            next({
-                name: 'home_index'
-            });
-        } else {
-            const curRouterObj = Util.getRouterObjByName([otherRouter, ...appRouter], to.name);
-            if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
-                if (curRouterObj.access === parseInt(localStorage.getItem('access'))) {
-                    Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
-                } else {
-                    next({
-                        replace: true,
-                        name: 'error-403'
-                    });
-                }
-            } else { // 没有配置权限的路由, 直接通过
-                Util.toDefaultPage([...routers], to.name, router, next);
-            }
-        }
-    }
-});
+  try{
+    document.title = to.meta.title;
+  }catch(e){console.warn('load title warning!')}
+  iView.LoadingBar.start()
+  const token = getToken()
+  if (!token && to.name !== LOGIN_PAGE_NAME) {
+    // 未登录且要跳转的页面不是登录页
+    next({
+      name: LOGIN_PAGE_NAME // 跳转到登录页
+    })
+  } else if (!token && to.name === LOGIN_PAGE_NAME) {
+    // 未登陆且要跳转的页面是登录页
+    next() // 跳转
+  } else if (token && to.name === LOGIN_PAGE_NAME) {
+    // 已登录且要跳转的页面是登录页
+    next({
+      name: 'home' // 跳转到home页
+    })
+  } else {
+    store.dispatch('getUserInfo').then(user => {
+      // 拉取用户信息，通过用户权限和跳转的页面的name来判断是否有权限访问;access必须是一个数组，如：['super_admin'] ['super_admin', 'admin']
+      if (canTurnTo(to.name, user.access, routes)) next() // 有权限，可访问
+      else next({ replace: true, name: 'error_401' }) // 无权限，重定向到401页面
+    })
+  }
+})
 
-router.afterEach((to) => {
-    Util.openNewPage(router.app, to.name, to.params, to.query);
-    iView.LoadingBar.finish();
-    window.scrollTo(0, 0);
-});
+router.afterEach(to => {
+  iView.LoadingBar.finish()
+  window.scrollTo(0, 0)
+})
+
+export default router
