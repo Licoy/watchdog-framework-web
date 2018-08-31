@@ -1,4 +1,4 @@
-# 介绍
+# 介绍 
 `watchDog-framework-web`是[watchDog-framework](https://github.com/Licoy/watchDog-framework)的前端项目工程，本项目基于Vue + iView-Admin + Vue-Router + Vuex + Axios开发。
 
 # 使用
@@ -33,4 +33,5 @@ npm run build
  
     [点我快捷加入QQ群讨论](https://shang.qq.com/wpa/qunwpa?idkey=c3541f1d0dbe443456228e3aebf23f6795b614a94d5df6a32f0b2b1c759bb99b)
     
-
+# 版本支持
+  - 0.2.X
