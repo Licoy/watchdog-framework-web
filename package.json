@@ -10,7 +10,7 @@
     "url": "https://github.com/Licoy/watchDog-framework"
   },
   "scripts": {
-    "dev": "vue-cli-service serve --open",
+    "dev": "vue-cli-service serve --open --port=1002",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
