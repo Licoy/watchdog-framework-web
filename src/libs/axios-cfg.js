@@ -6,8 +6,10 @@ import store from '@/store';
 import {router} from '@/router/index';
 import config from '../config/index';
 
+const baseRequestUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro;  
+
 const axiosInstance = axios.create({  
-    baseURL: process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro,  
+    baseURL: baseRequestUrl,  
     timeout: 3000,
     // withCredentials: true
 });
@@ -24,9 +26,10 @@ axiosInstance.interceptors.request.use(function (config) {
 axiosInstance.interceptors.response.use(res => {
     iView.LoadingBar.finish();
     //-6表明身份异常或未登录
-    if(res.data.status == -6){
-        store.commit('logout', this);
-        store.commit('clearOpenedSubmenu');
+    if(res.data.code == -6){
+        store.commit('setToken', '')
+        store.commit('setAccess', [])
+        localStorage.clear()
         router.push({
             name: 'login'
         });
@@ -38,12 +41,19 @@ axiosInstance.interceptors.response.use(res => {
     return res.data;
 }, error => {
     iView.LoadingBar.finish();
+    console.error(error)
     throw new ResError("请求服务器失败，请检查服务是否正常！")
     return error
 })
 
-export const get = (url,params,pathVariable=null) =>  axiosInstance.get(sf(url, pathVariable), params)
+export const baseUrl = baseRequestUrl;
+
+export const get = (url,params,pathVariable=null) =>  axiosInstance.get(sf(url, pathVariable), {params:params})
 
 export const post = (url,params,pathVariable=null) => axiosInstance.post(sf(url, pathVariable), params)
 
-//more request method ... put delete patch
+export const put = (url,params,pathVariable=null) => axiosInstance.put(sf(url, pathVariable), params)
+
+export const patch = (url,params,pathVariable=null) => axiosInstance.patch(sf(url, pathVariable), params)
+
+export const del = (url,params,pathVariable=null) => axiosInstance.delete(sf(url, pathVariable), {params:params})
