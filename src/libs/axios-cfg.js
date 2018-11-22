@@ -48,7 +48,14 @@ axiosInstance.interceptors.response.use(res => {
 
 export const baseUrl = baseRequestUrl;
 
-export const get = (url,params,pathVariable=null) =>  axiosInstance.get(sf(url, pathVariable), {params:params})
+export const get = (url, params, pathVariable = null) => {
+  if (params == null) {
+    params = {axios_timestamp_current: new Date().getTime()}
+  } else {
+    params.axios_timestamp_current = new Date().getTime()
+  }
+  return axiosInstance.get(sf(url, pathVariable), {params: params})
+}
 
 export const post = (url,params,pathVariable=null) => axiosInstance.post(sf(url, pathVariable), params)
 
