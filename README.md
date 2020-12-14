@@ -27,11 +27,6 @@ npm run build
     更改根目录下的`package.json`文件中的`scripts.dev`的`--port`的值为你所需要的端口即可，例如使用2000端口即为：`"dev": "vue-cli-service serve --open --port=2000"`
 # 声明
 若要将此项目用于商业用途请自行更换资源内的不可商用或商用需要授权的文件，例如LOGO、背景图等，若因未更换造成的损失均由使用者自行承担。
-# 讨论
 
- - QQ群：30261540 
- 
-    [点我快捷加入QQ群讨论](https://shang.qq.com/wpa/qunwpa?idkey=c3541f1d0dbe443456228e3aebf23f6795b614a94d5df6a32f0b2b1c759bb99b)
-    
 # 版本支持
   - 0.2.x
