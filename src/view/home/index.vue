@@ -23,7 +23,7 @@
           <h2>讨论</h2>
           <div class="margin-bottom-10" style="margin-left:20px">
               <ul>
-                <li>QQ群：30261540 <a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=c3541f1d0dbe443456228e3aebf23f6795b614a94d5df6a32f0b2b1c759bb99b">点我直接加入</a></li>
+                <li>QQ群：已解散，请使用issue进行讨论</li>
                 <li>作者博客：<a target="_blank" href="https://www.licoy.cn/">https://www.licoy.cn/</a></li>
               </ul>
           </div>
