@@ -29,7 +29,7 @@
     "vue-table-with-tree-grid": "^0.2.4",
     "vuedraggable": "^2.16.0",
     "vuex": "^3.0.1",
-    "xlsx": "^0.13.3"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.0.0-rc.1",
